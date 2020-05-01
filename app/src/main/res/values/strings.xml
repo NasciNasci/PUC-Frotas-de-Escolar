@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Frotas de Escolar</string>
+    <string name="insira_seu_nome">Insira seu nome!</string>
+    <string name="insira_sua_senha">Insira sua senha!</string>
+    <string name="login">Login</string>
+    <string name="entrar">Entrar</string>
+    <string name="criar_uma_conta">Criar uma conta</string>
+</resources>
