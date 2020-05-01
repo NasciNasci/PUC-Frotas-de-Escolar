@@ -38,7 +38,11 @@ Depois de clonado o repositório, crie uma branch para a edição do mesmo em su
 git branch <Branch Name>
 ```
 
-Substitua **<Branch Name>** pelo nome da sua branch. Agora você já pode adicionar, remover e atualizar dados do repositório clonado e depois submetê-lo para merge! Após a conclusão das alterações sobre os dados, deve-se fazer o add do repositório para o INDEX do git, preparando-o para a realização do commit, que é a confirmação das alterações realizadas localmente - caso vá submeter as alterações via Android Studio, esta etapa pode ser desconsiderada.
+Substitua **<Branch Name>** pelo nome da sua branch. Agora você já pode adicionar, remover e atualizar dados do repositório clonado e depois submetê-lo para merge! Após a conclusão das alterações sobre os dados, deve-se fazer o add do repositório para o INDEX do git, preparando-o para a realização do commit, que é a confirmação das alterações realizadas localmente - caso vá submeter as alterações via Android Studio, esta etapa pode ser desconsiderada. Depois de criada a branch, altere para ela para que ela receba as alterações ao invés da branch master.
+
+```
+git checkout <Branch Name>
+```
 
 ### 3. Fazendo add
 
