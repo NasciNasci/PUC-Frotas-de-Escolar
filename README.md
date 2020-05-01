@@ -3,7 +3,26 @@ Trabalho da disciplina Laboratório de Desenvolvimento para Dispositivos Móveis
 
 # Como contribuir
 
-Primeiro é necessário que este repositório remoto seja clonado para sua máquina, criando assim um repositório local no qual você pode realizar alterações que podem ser submetidas para uma fusão (merge) com o repositório remoto. Para clonar o repositório, abra seu prompt de comando ou git e insira o comando abaixo, subtituindo a tag **<HTTPS>** pela cópia link URL para clone HTTPS do repositório em questão - na página inicial do repositório na opção **Clone or Download**.
+Antes de tudo, é necessário que possua o git instalado em sua máquina. 
+Isso pode ser feito acessando este link: https://git-scm.com/download/win
+
+Depois, insira suas credenciais de acesso via git bash ou seu prompt de comando.
+
+### 0. Configurando o git
+
+Primeiro insira seu username por meio do seguinte comando - substitua **"user name"** pelo seu nome de usuário.
+
+```
+git config --global user.name "user name"
+```
+
+E depois seu email de acesso.
+
+```
+git config --global user.email "myemail@email.com"
+```
+
+Depois de configurado o git, é necessário que este repositório remoto seja clonado para sua máquina, criando assim um repositório local no qual você pode realizar alterações que podem ser submetidas para uma fusão (merge) com o repositório remoto. Para clonar o repositório, abra seu prompt de comando ou git e insira o comando abaixo, subtituindo a tag **<HTTPS>** pela cópia link URL para clone HTTPS do repositório em questão - na página inicial do repositório na opção **Clone or Download**.
 
 ### 1. Clonando um repositório
 
