@@ -76,5 +76,5 @@ Caso já tenha inicializado o git no Android, na tela inicial do Android Studio,
 
 ### 2. Para enviar a branch para merge
 
-Uma vez dentro do projeto, no menu superior, surgirá uma nova aba de ferramentas para o Git, que incluem **Update** (pull), **Commit**, **Show History** e **Revert**, que permitem o rastreamento do código. Depois de finalizadas as alterações e realizado o commit, abra o terminal ou Git Bash na pasta do repositório local e siga os passos para push demonstrada na sessão anterior, tópico 5.
+Uma vez dentro do projeto, no menu superior, surgirá uma nova aba de ferramentas para o Git, que incluem **Update** (pull), **Commit**, **Show History** e **Revert**, que permitem o rastreamento do código. Depois de finalizadas as alterações, selecione a opção de **Commit** e depois **Commit and Push** para enviar as alterações para o repositório remoto.
 
