@@ -74,7 +74,7 @@ public class Usuario {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public String getSenha() {
@@ -85,19 +85,19 @@ public class Usuario {
         return this.status;
     }
 
-    public boolean create(final Usuario usuario, final DatabaseReference databaseReference) {
+    public boolean create(final DatabaseReference databaseReference) {
         usuarioJaCadastrado = false;
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String idUsuario = Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
-                usuario.setId(idUsuario);
+                String idUsuario = Base64.encodeToString(getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
+                setId(idUsuario);
                 usuarioJaCadastrado = dataSnapshot.hasChild(idUsuario);
 
                 if (usuarioJaCadastrado) {
                     usuarioJaCadastrado = true;
                 } else {
-                    databaseReference.child(idUsuario).setValue(usuario);
+                    databaseReference.child(idUsuario).setValue(this);
                 }
             }
 
