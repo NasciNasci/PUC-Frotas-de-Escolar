@@ -10,17 +10,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".MainActivity">
+        tools:context=".activity_cadastrar">
 
         <FrameLayout
             android:id="@+id/frameLayout"
-            android:layout_width="300dp"
-            android:layout_height="0dp"
+            android:layout_width="332dp"
+            android:layout_height="524dp"
             android:background="@color/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@+id/guideline5"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline12">
+            app:layout_constraintTop_toTopOf="parent">
 
         </FrameLayout>
 
@@ -28,43 +29,38 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login"
+            android:text="@string/cadastrar"
             app:layout_constraintBottom_toTopOf="@+id/frameLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline8" />
+            app:layout_constraintTop_toTopOf="@+id/guideline8"
+            app:layout_constraintVertical_bias="0.0" />
 
-        <RadioButton
-            android:id="@+id/radio_button_motorista"
+        <EditText
+            android:id="@+id/edit_nome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/motorista"
-            app:layout_constraintBottom_toTopOf="@+id/guideline13"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/guideline13"
-            tools:layout_editor_absoluteX="214dp"
-            tools:layout_editor_absoluteY="170dp"/>
-
-        <RadioButton
-            android:id="@+id/radio_button_aluno"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cliente"
-            app:layout_constraintBottom_toTopOf="@+id/guideline13"
+            android:layout_gravity="center"
+            android:autofillHints="Insira seu nome!"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/insira_seu_nome"
+            android:inputType="textPersonName"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:textSize="@dimen/tamanho_credenciais"
+            app:layout_constraintBottom_toTopOf="@+id/guideline10"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/guideline13"
-            tools:layout_editor_absoluteX="214dp"
-            tools:layout_editor_absoluteY="170dp" />
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/guideline10" />
 
         <EditText
             android:id="@+id/edit_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:autofillHints="Insira seu nome!"
+            android:autofillHints="Insira seu email!"
             android:ems="10"
             android:gravity="center"
             android:hint="@string/insira_seu_email"
@@ -95,24 +91,54 @@
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
-        <Button
-            android:id="@+id/botao_entrar"
+        <EditText
+            android:id="@+id/edit_confirma_senha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/entrar"
+            android:layout_gravity="center"
+            android:autofillHints="Insira sua senha!"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/confirme_sua_senha"
+            android:inputType="textPassword"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:textSize="@dimen/tamanho_credenciais"
+            app:layout_constraintBottom_toTopOf="@+id/guideline4"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
-        <Button
-            android:id="@+id/botao_criar_conta"
-            android:layout_width="0dp"
+        <RadioButton
+            android:id="@+id/radio_button_motorista"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/criar_uma_conta"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/motorista"
+            app:layout_constraintBottom_toTopOf="@+id/guideline11"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/guideline11" />
+
+        <RadioButton
+            android:id="@+id/radio_button_aluno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cliente"
+            app:layout_constraintBottom_toTopOf="@+id/guideline11"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/guideline11"
+            tools:layout_editor_absoluteX="214dp"
+            tools:layout_editor_absoluteY="170dp" />
+        <Button
+            android:id="@+id/botao_entrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cadastrar"
+            app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+            app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -157,13 +183,6 @@
             app:layout_constraintGuide_percent="0.4" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.3" />
-
-        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -175,15 +194,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.75" />
+            app:layout_constraintGuide_percent="0.7" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline12"
+            android:id="@+id/guideline9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.20" />
+            app:layout_constraintGuide_percent="0.8" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.3" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
