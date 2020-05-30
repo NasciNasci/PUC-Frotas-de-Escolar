@@ -13,6 +13,7 @@
     <string name="entrar">Entrar</string>
     <string name="criar_uma_conta">Criar uma conta</string>
     <string name="motorista">Motorista</string>
+    <string name="cliente">Cliente</string>
     <string name="instituicoes">Intistuições de Ensino Atendidas</string>
     <string name="listar">listar</string>
 </resources>
