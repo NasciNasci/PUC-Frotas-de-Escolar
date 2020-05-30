@@ -1,7 +1,7 @@
 package com.cursoandroid.pucfrotasdeescolar;
 
 public class Usuario {
-    private int id;
+    private String id;
     private String nome;
     private String email;
     private String senha;
@@ -22,7 +22,7 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public Usuario(int id, String nome, String email, String senha) {
+    public Usuario(String id, String nome, String email, String senha) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -35,7 +35,7 @@ public class Usuario {
         this.status = status;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -51,7 +51,7 @@ public class Usuario {
 
     public void setStatus(boolean status) { this.status = status; }
 
-    public int getId(){
+    public String getId(){
         return this.id;
     }
 

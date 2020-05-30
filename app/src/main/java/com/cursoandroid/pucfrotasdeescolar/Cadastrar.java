@@ -56,6 +56,7 @@ public class Cadastrar extends AppCompatActivity {
                 String senha1 = textSenha.getText().toString();
                 String senha2 = textConfirmaSenha.getText().toString();
 
+
                if(buttonAluno.isChecked() || buttonMotorista.isChecked()){
                    if(verificaEmail(email) && (!nome.equals("")) && (!senha1.equals("")) && (!senha2.equals(""))){
                        if(senha1.equals(senha2)){
@@ -65,7 +66,7 @@ public class Cadastrar extends AppCompatActivity {
                            usuario.setSenha(senha1);
                            if(buttonMotorista.isChecked()){
                                cadastrarUsuario(usuario, motorista);
-                           }
+                           }// end if
                            if(buttonAluno.isChecked()){
                                cadastrarUsuario(usuario,cliente);
                            }// end if
@@ -79,9 +80,14 @@ public class Cadastrar extends AppCompatActivity {
                }else{
                    Toast.makeText(getApplicationContext(), "Selecione uma opção.", Toast.LENGTH_SHORT).show();
                }// end if
-
-                // Vai para a tela de desejada.
-                //startActivity(new Intent(cadastrar.this, MainActivity.class));
+                if(buttonMotorista.isChecked()){
+                    // Vai para a tela de desejada.
+                    //startActivity(new Intent(Cadastrar.this, Motorista.class));
+                }
+                if(buttonAluno.isChecked()){
+                    // Vai para a tela de desejada.
+                    //startActivity(new Intent(Cadastrar.this, Cliente.class));
+                }
             }
         });
 
@@ -99,7 +105,7 @@ public class Cadastrar extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String idUsuario = Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
-                usuario.setId(Integer.parseInt(idUsuario));
+                usuario.setId(idUsuario);
                 boolean usuarioJaCadastrado = dataSnapshot.hasChild(idUsuario);
 
                 if(usuarioJaCadastrado)
