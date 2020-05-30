@@ -50,19 +50,20 @@ public class MainActivity extends AppCompatActivity {
                 String email = emailUsuario.getText().toString();
                 String senha = senhaUsuario.getText().toString();
 
-                if(buttonMotorista.isSelected() || buttonAluno.isSelected()){
+                if(buttonMotorista.isChecked() || buttonAluno.isChecked()){
 
                     if( verificaEmail(email) && (!senha.equals(""))){
 
                         Usuario usuario = new Usuario(email, senha, false);
 
-                        if(buttonMotorista.isSelected()){
+                        if(buttonMotorista.isChecked()){
                             login(usuario, motorista);
                             if(usuario.getStatus() == true) {
                                 // Vai para a tela de motorista
                                 //startActivity(new Intent(MainActivity.this, Motorista.class));
                             }// end if
-                        }else{
+                        }// end if
+                        if(buttonAluno.isChecked()){
                             login(usuario, cliente);
                             if(usuario.getStatus() == true) {
                                 // Vai para a tela de cliente
@@ -113,13 +114,13 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(getApplicationContext(), "Usuário não encontrado.", Toast.LENGTH_SHORT).show();
                     }// end if
-                }
-            }
+                }// end if
+            }// end if
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-    }// end login()*/
+    }// end login()
 }// end class
