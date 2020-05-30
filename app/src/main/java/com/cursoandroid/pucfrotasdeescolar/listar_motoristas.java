@@ -53,8 +53,7 @@ public class listar_motoristas extends AppCompatActivity {
                 }
                 adapter = new
                         ArrayAdapter<Motorista>(getApplicationContext(),
-                        android.R.layout.simple_list_item_1,
-                        motoristas);
+                        android.R.layout.simple_list_item_1, motoristas);
                 listView.setAdapter(adapter);
             }
 
