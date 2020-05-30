@@ -43,16 +43,17 @@ public class listar_motoristas extends AppCompatActivity {
                     Motorista motorista = new Motorista();
                     motorista.setNome(postSnapshot.child("nome").getValue().toString());
                     motorista.setEmail(postSnapshot.child("email").getValue().toString());
+                    //motorista.setSenha(postSnapshot.child("senha").getValue().toString());
                     motorista.setInstituicoesAtendidas(postSnapshot.child("instituicoesAtendidas").getValue().toString());
-                    motorista.setLocaisAtendidos(postSnapshot.child("locaisAtendidos").getValue().toString());
-                    motorista.setTelefone(postSnapshot.child("telefone").getValue().toString());
+                    //motorista.setLocaisAtendidos(postSnapshot.child("locaisAtendidos").getValue().toString());
+                    //motorista.setTelefone(postSnapshot.child("telefone").getValue().toString());
+                    //motorista.setAcessos(Integer.parseInt(postSnapshot.child("acessos").getValue().toString()));
                     motoristas.add(motorista);
                     motorista = null;
                 }
                 adapter = new
                         ArrayAdapter<Motorista>(getApplicationContext(),
-                        android.R.layout.simple_list_item_1,
-                        motoristas);
+                        android.R.layout.simple_list_item_1, motoristas);
                 listView.setAdapter(adapter);
             }
 
