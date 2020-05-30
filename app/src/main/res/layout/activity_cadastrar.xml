@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".Cadastrar">
+        tools:context=".activity_cadastrar">
 
         <FrameLayout
             android:id="@+id/frameLayout"
