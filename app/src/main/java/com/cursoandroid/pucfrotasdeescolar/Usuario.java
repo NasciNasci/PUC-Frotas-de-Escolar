@@ -3,21 +3,36 @@ package com.cursoandroid.pucfrotasdeescolar;
 public class Usuario {
     private int id;
     private String nome;
+    private String email;
     private String senha;
+    private boolean status;
 
     public Usuario() {
-        new Usuario("", "");
+        new Usuario("", "", "");
     }
 
-    public Usuario(String nome, String senha) {
-        this.nome = nome;
+    public Usuario(String email, String senha){
+        this.email = email;
         this.senha = senha;
     }
 
-    public Usuario(int id, String nome, String senha) {
+    public Usuario(String nome, String email, String senha) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+    }
+
+    public Usuario(int id, String nome, String email, String senha) {
         this.id = id;
         this.nome = nome;
+        this.email = email;
         this.senha = senha;
+    }
+
+    public Usuario(String email, String senha, boolean status){
+        this.email = email;
+        this.senha = senha;
+        this.status = status;
     }
 
     public void setId(int id) {
@@ -28,9 +43,13 @@ public class Usuario {
         this.nome = nome;
     }
 
+    public void setEmail(String email) { this.email = email; }
+
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+    public void setStatus(boolean status) { this.status = status; }
 
     public int getId(){
         return this.id;
@@ -40,7 +59,11 @@ public class Usuario {
         return this.nome;
     }
 
+    public String getEmail() { return email; }
+
     public String getSenha(){
         return this.senha;
     }
+
+    public boolean getStatus() { return this.status; }
 }

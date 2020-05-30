@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "116685009232",
+    "firebase_url": "https://puc-frotas-de-escolar.firebaseio.com",
+    "project_id": "puc-frotas-de-escolar",
+    "storage_bucket": "puc-frotas-de-escolar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116685009232:android:2feb3494815c517474fc55",
+        "android_client_info": {
+          "package_name": "com.cursoandroid.pucfrotasdeescolar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "116685009232-iptd121t79gah73p7n1fdj4a6svvd68k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cursoandroid.pucfrotasdeescolar",
+            "certificate_hash": "e423c32218a6620e0c9e8e63645e68da3d2bfd2b"
+          }
+        },
+        {
+          "client_id": "116685009232-m640vb1ud8480ui2ouu436tqm0iru7rd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoiL7m1HGAr_ukqUnoAxi0O5AV-NEbs50"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "116685009232-m640vb1ud8480ui2ouu436tqm0iru7rd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
