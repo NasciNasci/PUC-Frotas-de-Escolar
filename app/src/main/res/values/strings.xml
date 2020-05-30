@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">Frotas de Escolar</string>
     <string name="insira_seu_nome">Insira seu nome!</string>
+    <string name="insira_seu_email">Insira seu email!</string>
     <string name="insira_sua_senha">Insira sua senha!</string>
+    <string name="confirme_sua_senha">Confime sua senha!</string>
     <string name="login">Login</string>
+    <string name="cadastrar">Cadastrar</string>
     <string name="entrar">Entrar</string>
     <string name="criar_uma_conta">Criar uma conta</string>
+    <string name="motorista">Motorista</string>
+    <string name="cliente">Cliente</string>
 </resources>
