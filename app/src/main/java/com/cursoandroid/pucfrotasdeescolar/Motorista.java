@@ -29,6 +29,12 @@ public class Motorista extends Usuario {
         this.senha = senha;
     }
 
+    public String toString() {
+        return this.nome + "\n"
+                + email + "\n"
+                + "Instituições Atendidas: " + this.instituicoesAtendidas;
+    }
+
     public void setInstituicoesAtendidas(String instituicoesAtendidas) {
         this.instituicoesAtendidas = instituicoesAtendidas;
     }
@@ -37,11 +43,11 @@ public class Motorista extends Usuario {
         this.locaisAtendidos = locaisAtendidos;
     }
 
-    public void setTelefone(String telefone) {
+    public void setTelefone(String telefone){
         this.telefone = telefone;
     }
 
-    public void setAcessos(int acessos) {
+    public void setAcessos(int acessos){
         this.acessos = acessos;
     }
 
@@ -53,11 +59,11 @@ public class Motorista extends Usuario {
         return this.locaisAtendidos;
     }
 
-    public String getTelefone(String telefone) {
+    public String getTelefone(String telefone){
         return this.telefone;
     }
 
-    public int getAcessos() {
+    public int getAcessos(){
         return this.acessos;
     }
 }
