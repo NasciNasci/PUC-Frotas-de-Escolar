@@ -59,7 +59,7 @@ public class Cadastrar extends AppCompatActivity {
                             if(usuario.create(usuario, motorista)) Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
                         }
                         if (buttonAluno.isChecked()) {
-                            usuario.create(usuario, cliente);
+                            if(usuario.create(usuario, cliente)) Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
                         }
                         Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
                     } else {
