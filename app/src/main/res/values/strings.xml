@@ -6,6 +6,10 @@
     <string name="confirme_sua_senha">Confime sua senha!</string>
     <string name="login">Login</string>
     <string name="cadastrar">Cadastrar</string>
+    <string name="descricao">Descrição</string>
+    <string name="telefone">Telefone</string>
+    <string name="bairros">Bairros</string>
+    <string name="salvar">Salvar</string>
     <string name="entrar">Entrar</string>
     <string name="criar_uma_conta">Criar uma conta</string>
     <string name="motorista">Motorista</string>

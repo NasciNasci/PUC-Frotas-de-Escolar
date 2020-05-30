@@ -1,5 +1,14 @@
 package com.cursoandroid.pucfrotasdeescolar;
 
+import android.util.Base64;
+
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
 public class Cliente extends Usuario {
 
     public Cliente() {
@@ -22,9 +31,5 @@ public class Cliente extends Usuario {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-    }
-
-    public Cliente(Usuario usuario) {
-        new Cliente(usuario.nome, usuario.email, usuario.senha);
     }
 }

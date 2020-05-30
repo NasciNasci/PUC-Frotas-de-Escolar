@@ -29,10 +29,6 @@ public class Motorista extends Usuario {
         this.senha = senha;
     }
 
-    public Motorista(Usuario usuario){
-        new Motorista(usuario.nome,usuario.email,usuario.senha);
-    }
-
     public String toString() {
         return this.nome + "\n"
                 + email + "\n"
