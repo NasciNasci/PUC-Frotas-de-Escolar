@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".principal_alunos"></activity>
+        <activity android:name=".principal_cliente"></activity>
         <activity android:name=".Cadastrar" />
         <activity
             android:name=".MainActivity"
