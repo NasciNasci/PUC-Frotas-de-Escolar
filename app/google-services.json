@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "116685009232-ojjfsph21irhek3ttph2duri61j065fj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.cursoandroid.pucfrotasdeescolar",
-            "certificate_hash": "53224941949be0c52e084ae8ab81eac6b98d5a41"
-          }
-        },
-        {
           "client_id": "116685009232-iptd121t79gah73p7n1fdj4a6svvd68k.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
