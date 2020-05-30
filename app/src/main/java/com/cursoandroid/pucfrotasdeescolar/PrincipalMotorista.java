@@ -18,6 +18,7 @@ public class PrincipalMotorista extends AppCompatActivity {
     private EditText textDescricao;
     private EditText textBairro;
     private EditText textTelefone;
+    private EditText textInstituicoes;
     private Button buttonSalvar;
 
     @Override
@@ -25,7 +26,9 @@ public class PrincipalMotorista extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal_motorista);
 
-
+        textDescricao = (EditText) findViewById(R.id.editText_descricao);
+        textBairro = (EditText) findViewById(R.id.editText_bairros);
+        textTelefone = (EditText) findViewById(R.id.editText_telefone);
 
     }
 }
