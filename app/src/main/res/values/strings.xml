@@ -15,4 +15,5 @@
     <string name="motorista">Motorista</string>
     <string name="cliente">Cliente</string>
     <string name="instituicoes">Intistuições de Ensino Atendidas</string>
+    <string name="listar">listar</string>
 </resources>
