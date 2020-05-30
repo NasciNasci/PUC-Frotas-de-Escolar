@@ -45,6 +45,10 @@ public class Usuario {
         this.status = status;
     }
 
+    public Usuario(Usuario usuario) {
+        new Usuario(usuario.nome, usuario.email, usuario.senha);
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -74,7 +78,7 @@ public class Usuario {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public String getSenha() {
@@ -91,7 +95,7 @@ public class Usuario {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String idUsuario = Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
-                usuario.setId(idUsuario);
+                setId(idUsuario);
                 usuarioJaCadastrado = dataSnapshot.hasChild(idUsuario);
 
                 if (usuarioJaCadastrado) {

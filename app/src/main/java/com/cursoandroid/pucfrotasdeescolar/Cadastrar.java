@@ -16,8 +16,8 @@ public class Cadastrar extends AppCompatActivity {
 
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-    private DatabaseReference motorista = databaseReference.child("Motorista");
-    private DatabaseReference cliente = databaseReference.child("Cliente");
+    private DatabaseReference motoristaDatabase = databaseReference.child("Motorista");
+    private DatabaseReference clienteDatabase = databaseReference.child("Cliente");
 
     private RadioButton buttonMotorista;
     private RadioButton buttonAluno;
@@ -51,15 +51,19 @@ public class Cadastrar extends AppCompatActivity {
                 if ((!nome.equals("")) && verificaEmail(email) && (!senha1.equals("")) && (!senha2.equals(""))) {
 
                     if (senha1.equals(senha2)) {
-                        Usuario usuario = new Usuario(nome, email, senha1);
-                        usuario.setNome(nome);
-                        usuario.setEmail(email);
-                        usuario.setSenha(senha1);
                         if (buttonMotorista.isChecked()) {
-                            if(usuario.create(usuario, motorista)) Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
+                            Motorista motorista = new Motorista(nome, email, senha1);
+                            motorista.setAcessos(0);
+                            motorista.setInstituicoesAtendidas("");
+                            motorista.setLocaisAtendidos("");
+                            motorista.setTelefone("");
+                            if (motorista.create(motorista, motoristaDatabase))
+                                Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
                         }
                         if (buttonAluno.isChecked()) {
-                            if(usuario.create(usuario, cliente)) Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
+                            Cliente cliente = new Cliente(nome, email, senha1);
+                            if (cliente.create(cliente, clienteDatabase))
+                                Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
                         }
                         Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
                     } else {
