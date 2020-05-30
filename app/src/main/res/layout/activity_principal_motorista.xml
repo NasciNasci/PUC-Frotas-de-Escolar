@@ -14,127 +14,60 @@
 
         <FrameLayout
             android:id="@+id/frameLayout"
-            android:layout_width="332dp"
-            android:layout_height="524dp"
+            android:layout_width="356dp"
+            android:layout_height="584dp"
             android:background="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cadastrar"
-            app:layout_constraintBottom_toTopOf="@+id/frameLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline8"
-            app:layout_constraintVertical_bias="0.0" />
-
         <EditText
-            android:id="@+id/edit_nome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:autofillHints="Insira seu nome!"
+            android:id="@+id/editText"
+            android:layout_width="200dp"
+            android:layout_height="83dp"
             android:ems="10"
-            android:gravity="center"
-            android:hint="@string/insira_seu_nome"
-            android:inputType="textPersonName"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
-            android:textSize="@dimen/tamanho_credenciais"
-            app:layout_constraintBottom_toTopOf="@+id/guideline10"
+            android:gravity="start|top"
+            android:hint="@string/descricao"
+            android:inputType="textMultiLine"
+            app:layout_constraintBottom_toTopOf="@+id/guideline11"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/guideline10" />
+            app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
         <EditText
-            android:id="@+id/edit_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:autofillHints="Insira seu email!"
+            android:id="@+id/editText2"
+            android:layout_width="200dp"
+            android:layout_height="39dp"
             android:ems="10"
-            android:gravity="center"
-            android:hint="@string/insira_seu_email"
-            android:inputType="textEmailAddress"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
-            android:textSize="@dimen/tamanho_credenciais"
+            android:hint="@string/telefone"
+            android:inputType="phone"
             app:layout_constraintBottom_toTopOf="@+id/guideline7"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
         <EditText
-            android:id="@+id/edit_senha"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:autofillHints="Insira sua senha!"
+            android:id="@+id/editText3"
+            android:layout_width="204dp"
+            android:layout_height="87dp"
             android:ems="10"
-            android:gravity="center"
-            android:hint="@string/insira_sua_senha"
-            android:inputType="textPassword"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
-            android:textSize="@dimen/tamanho_credenciais"
-            app:layout_constraintBottom_toTopOf="@+id/guideline6"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/guideline6" />
-
-        <EditText
-            android:id="@+id/edit_confirma_senha"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:autofillHints="Insira sua senha!"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="@string/confirme_sua_senha"
-            android:inputType="textPassword"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
-            android:textSize="@dimen/tamanho_credenciais"
+            android:gravity="start|top"
+            android:hint="@string/bairros"
+            android:inputType="textMultiLine"
             app:layout_constraintBottom_toTopOf="@+id/guideline4"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
-        <RadioButton
-            android:id="@+id/radio_button_motorista"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/motorista"
-            app:layout_constraintBottom_toTopOf="@+id/guideline11"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/guideline11" />
-
-        <RadioButton
-            android:id="@+id/radio_button_aluno"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cliente"
-            app:layout_constraintBottom_toTopOf="@+id/guideline11"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/guideline11"
-            tools:layout_editor_absoluteX="214dp"
-            tools:layout_editor_absoluteY="170dp" />
         <Button
-            android:id="@+id/botao_entrar"
+            android:id="@+id/botao_salvar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cadastrar"
+            android:text="@string/salvar"
             app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -160,6 +93,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.25" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="29dp"
+            app:layout_constraintGuide_percent="0.07" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline4"
