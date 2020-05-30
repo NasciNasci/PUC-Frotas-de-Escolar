@@ -45,6 +45,10 @@ public class Usuario {
         this.status = status;
     }
 
+    public Usuario(Usuario usuario) {
+        new Usuario(usuario.nome, usuario.email, usuario.senha);
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -85,19 +89,19 @@ public class Usuario {
         return this.status;
     }
 
-    public boolean create(final DatabaseReference databaseReference) {
+    public boolean create(final Usuario usuario, final DatabaseReference databaseReference) {
         usuarioJaCadastrado = false;
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String idUsuario = Base64.encodeToString(getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
+                String idUsuario = Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
                 setId(idUsuario);
                 usuarioJaCadastrado = dataSnapshot.hasChild(idUsuario);
 
                 if (usuarioJaCadastrado) {
                     usuarioJaCadastrado = true;
                 } else {
-                    databaseReference.child(idUsuario).setValue(this);
+                    databaseReference.child(idUsuario).setValue(usuario);
                 }
             }
 
