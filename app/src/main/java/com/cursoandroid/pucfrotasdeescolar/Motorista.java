@@ -33,6 +33,12 @@ public class Motorista extends Usuario {
         new Motorista(usuario.nome,usuario.email,usuario.senha);
     }
 
+    public String toString() {
+        return this.nome + "\n"
+                + email + "\n"
+                + "Instituições Atendidas: " + this.instituicoesAtendidas;
+    }
+
     public void setInstituicoesAtendidas(String instituicoesAtendidas) {
         this.instituicoesAtendidas = instituicoesAtendidas;
     }
