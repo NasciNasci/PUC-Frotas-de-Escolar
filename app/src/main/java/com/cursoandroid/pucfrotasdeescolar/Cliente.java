@@ -23,4 +23,8 @@ public class Cliente extends Usuario {
         this.email = email;
         this.senha = senha;
     }
+
+    public Cliente(Usuario usuario) {
+        new Cliente(usuario.nome, usuario.email, usuario.senha);
+    }
 }
