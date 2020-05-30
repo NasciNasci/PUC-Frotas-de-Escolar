@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
-import java.lang.String;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -56,38 +55,40 @@ public class Cadastrar extends AppCompatActivity {
                 String senha1 = textSenha.getText().toString();
                 String senha2 = textConfirmaSenha.getText().toString();
 
+                //buttonAluno.isChecked();
+                //buttonMotorista.isChecked();
 
-               if(buttonAluno.isChecked() || buttonMotorista.isChecked()){
-                   if(verificaEmail(email) && (!nome.equals("")) && (!senha1.equals("")) && (!senha2.equals(""))){
-                       if(senha1.equals(senha2)){
-                           Usuario usuario = new Usuario(nome, email, senha1);
-                           usuario.setNome(nome);
-                           usuario.setEmail(email);
-                           usuario.setSenha(senha1);
-                           if(buttonMotorista.isChecked()){
-                               cadastrarUsuario(usuario, motorista);
-                           }// end if
-                           if(buttonAluno.isChecked()){
-                               cadastrarUsuario(usuario,cliente);
-                           }// end if
-                           Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
-                       }else{
-                           Toast.makeText(getApplicationContext(), "Senhas diferentes. Confirme novamente.", Toast.LENGTH_SHORT).show();
-                       }// end if
-                   }else{
-                       Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
-                   }// end if
-               }else{
-                   Toast.makeText(getApplicationContext(), "Selecione uma opção.", Toast.LENGTH_SHORT).show();
-               }// end if
-                if(buttonMotorista.isChecked()){
-                    // Vai para a tela de desejada.
-                    //startActivity(new Intent(Cadastrar.this, Motorista.class));
-                }
-                if(buttonAluno.isChecked()){
-                    // Vai para a tela de desejada.
-                    //startActivity(new Intent(Cadastrar.this, Cliente.class));
-                }
+                //buttonMotorista.
+
+//                if(buttonAluno.isChecked() || buttonMotorista.isChecked()){
+
+                if((!nome.equals("")) && verificaEmail(email) && (!senha1.equals("")) && (!senha2.equals(""))){
+
+                    if(senha1.equals(senha2)){
+
+                        Usuario usuario = new Usuario(nome, email, senha1);
+                        usuario.setNome(nome);
+                        usuario.setEmail(email);
+                        usuario.setSenha(senha1);
+                        if(buttonMotorista.isChecked()){
+                            cadastrarUsuario(usuario, motorista);
+                        }
+                        if(buttonAluno.isChecked()){
+                            cadastrarUsuario(usuario,cliente);
+                        }// end if
+                        Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Senhas diferentes. Confirme novamente.", Toast.LENGTH_SHORT).show();
+                    }// end if
+                }else{
+                    Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
+                }// end if
+                //}else{
+                //  Toast.makeText(getApplicationContext(), "Selecione uma opção.", Toast.LENGTH_SHORT).show();
+                //}// end if
+
+                // Vai para a tela de desejada.
+                //startActivity(new Intent(cadastrar.this, MainActivity.class));
             }
         });
 
@@ -105,13 +106,14 @@ public class Cadastrar extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String idUsuario = Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
-                usuario.setId(idUsuario);
+                usuario.setId(Integer.parseInt(idUsuario));
                 boolean usuarioJaCadastrado = dataSnapshot.hasChild(idUsuario);
 
                 if(usuarioJaCadastrado)
                     Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
                 else
                     databaseReference.child(idUsuario).setValue(usuario);
+
             }
 
             @Override

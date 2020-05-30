@@ -35,35 +35,23 @@ public class Usuario {
         this.status = status;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public void setId(String id) { this.id = id; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public void setNome(String nome) { this.nome = nome; }
 
     public void setEmail(String email) { this.email = email; }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
+    public void setSenha(String senha) { this.senha = senha; }
 
     public void setStatus(boolean status) { this.status = status; }
 
-    public String getId(){
-        return this.id;
-    }
+    public String getId(){ return this.id; }
 
-    public String getNome(){
-        return this.nome;
-    }
+    public String getNome(){ return this.nome; }
 
     public String getEmail() { return email; }
 
-    public String getSenha(){
-        return this.senha;
-    }
+    public String getSenha(){ return this.senha; }
 
     public boolean getStatus() { return this.status; }
 }
