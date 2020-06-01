@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.lang.String;
 
-public class listar_motoristas extends AppCompatActivity {
+public class Listar_motoristas extends AppCompatActivity {
 
     private ListView listView;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
