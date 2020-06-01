@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText senhaUsuario;
     private Button entrar;
     private Button cadastrar;
+    private FirebaseAuth mAuth;
+
+    boolean criado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
         buttonAluno = findViewById(R.id.radio_button_aluno);
         entrar = findViewById(R.id.botao_entrar);
         cadastrar = findViewById(R.id.botao_criar_conta);
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
         entrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,15 +64,18 @@ public class MainActivity extends AppCompatActivity {
                         Usuario usuario = new Usuario(email, senha, false);
 
                         if(buttonMotorista.isChecked()){
-                            login(usuario, motorista);
-                            if(usuario.getStatus() == true) {
+                            //login(usuario, motorista);
+                            if(login(usuario, motorista)) {
                                 // Vai para a tela de motorista
                                 //startActivity(new Intent(MainActivity.this, Motorista.class));
                             }// end if
                         }// end if
                         if(buttonAluno.isChecked()){
-                            login(usuario, cliente);
-                            if(usuario.getStatus() == true) {
+                            System.out.println("Entrou");
+                            //login(usuario, cliente);
+                            System.out.println(login(usuario, cliente) + " Status novo");
+                            if(login(usuario, cliente)) {
+                                System.out.println("Entrou4");
                                 // Vai para a tela de cliente
                                 startActivity(new Intent(MainActivity.this, PincipalCliente.class));
                             }// end if
@@ -96,9 +106,10 @@ public class MainActivity extends AppCompatActivity {
         return resposta;
     }// end verificaEmail()
 
-    private void login(final Usuario usuario, final DatabaseReference databaseReference) {
+    private boolean login(final Usuario usuario, final DatabaseReference databaseReference) {
         final String email = usuario.getEmail();
         final String senha = usuario.getSenha();
+        criado = false;
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -106,11 +117,15 @@ public class MainActivity extends AppCompatActivity {
                 boolean usuarioCadatrado = dataSnapshot.hasChild(idUsuario);
 
                 if (usuarioCadatrado) {
+                    System.out.println("Entrou2");
                     usuario.setEmail(dataSnapshot.child(idUsuario).child("email").getValue().toString());
                     usuario.setSenha(dataSnapshot.child(idUsuario).child("senha").getValue().toString());
 
                     if (email.equals(usuario.getEmail()) && senha.equals(usuario.getSenha())) {
+                        System.out.println("Entrou3");
                         usuario.setStatus(true);
+                        criado = true;
+                        System.out.println(criado + "NePossivel");
                     } else {
                         Toast.makeText(getApplicationContext(), "Usuário não encontrado.", Toast.LENGTH_SHORT).show();
                     }// end if
@@ -122,5 +137,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        System.out.println(criado+" Criado");
+
+        return criado;
     }// end login()
+
+
 }// end class
