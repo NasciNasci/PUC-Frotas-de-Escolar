@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                             login(usuario, cliente);
                             if(usuario.getStatus() == true) {
                                 // Vai para a tela de cliente
-                                //startActivity(new Intent(MainActivity.this, Clientes.class));
+                                startActivity(new Intent(MainActivity.this, PincipalCliente.class));
                             }// end if
                         }// end if
                     }else{

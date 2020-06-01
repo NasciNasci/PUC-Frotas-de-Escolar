@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".PincipalCliente"></activity>
-        <activity android:name=".listar_motoristas" />
+        <activity android:name=".Listar_motoristas" />
         <activity android:name=".Cadastrar" />
         <activity
             android:name=".MainActivity"
