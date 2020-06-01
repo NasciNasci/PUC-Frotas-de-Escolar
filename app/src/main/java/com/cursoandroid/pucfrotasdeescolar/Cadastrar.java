@@ -48,26 +48,32 @@ public class Cadastrar extends AppCompatActivity {
                 String senha1 = textSenha.getText().toString();
                 String senha2 = textConfirmaSenha.getText().toString();
 
-                if ((!nome.equals("")) && verificaEmail(email) && (!senha1.equals("")) && (!senha2.equals(""))) {
+                if ((!nome.equals("")) && (!senha1.equals("")) && (!senha2.equals(""))) {
 
-                    if (senha1.equals(senha2)) {
-                        if (buttonMotorista.isChecked()) {
-                            Motorista motorista = new Motorista(nome, email, senha1);
-                            motorista.setAcessos(0);
-                            motorista.setInstituicoesAtendidas("");
-                            motorista.setLocaisAtendidos("");
-                            motorista.setTelefone("");
-                            if (motorista.create(motorista, motoristaDatabase))
-                                Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
+                    if(verificaEmail(email)) {
+
+                        if (senha1.equals(senha2)) {
+                            if (buttonMotorista.isChecked()) {
+                                Motorista motorista = new Motorista(nome, email, senha1);
+                                motorista.setAcessos(0);
+                                motorista.setInstituicoesAtendidas("");
+                                motorista.setLocaisAtendidos("");
+                                motorista.setTelefone("");
+                                if (motorista.create(motorista, motoristaDatabase))
+                                    Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
+                            }
+                            if (buttonAluno.isChecked()) {
+                                Cliente cliente = new Cliente(nome, email, senha1);
+                                if (cliente.create(cliente, clienteDatabase))
+                                    Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
+                            }
+                            Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Senhas diferentes. Confirme novamente.", Toast.LENGTH_SHORT).show();
                         }
-                        if (buttonAluno.isChecked()) {
-                            Cliente cliente = new Cliente(nome, email, senha1);
-                            if (cliente.create(cliente, clienteDatabase))
-                                Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
-                        }
-                        Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Senhas diferentes. Confirme novamente.", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "Email inválido.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
