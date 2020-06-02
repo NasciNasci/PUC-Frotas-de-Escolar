@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class PincipalCliente extends AppCompatActivity {
+public class PrincipalCliente extends AppCompatActivity {
 
     private Button listar;
 
@@ -21,7 +21,7 @@ public class PincipalCliente extends AppCompatActivity {
         listar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PincipalCliente.this, Listar_motoristas.class));
+                startActivity(new Intent(PrincipalCliente.this, Listar_motoristas.class));
             }
         });
     }

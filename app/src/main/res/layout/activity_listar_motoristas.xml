@@ -7,14 +7,14 @@
     tools:context=".Listar_motoristas"
     android:background="@color/colorPrimary">
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listview_id"
-        android:layout_width="411dp"
-        android:layout_height="678dp"
+        tools:listitem="@layout/item_motorista"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.49" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

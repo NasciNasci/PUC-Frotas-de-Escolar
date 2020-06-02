@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PincipalCliente"></activity>
+        <activity android:name=".PrincipalCliente"></activity>
         <activity android:name=".Listar_motoristas" />
         <activity android:name=".Cadastrar" />
         <activity

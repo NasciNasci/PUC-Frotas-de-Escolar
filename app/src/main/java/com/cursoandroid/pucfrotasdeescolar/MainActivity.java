@@ -2,6 +2,8 @@ package com.cursoandroid.pucfrotasdeescolar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     private DatabaseReference motorista = databaseReference.child("Motorista");
     private DatabaseReference cliente = databaseReference.child("Cliente");
+    MutableLiveData<Boolean> loginSucesso = new MutableLiveData<>();
+    boolean isClient = false;
 
     private RadioButton buttonMotorista;
     private RadioButton buttonAluno;
@@ -52,33 +56,32 @@ public class MainActivity extends AppCompatActivity {
                 String email = emailUsuario.getText().toString();
                 String senha = senhaUsuario.getText().toString();
 
-                if(buttonMotorista.isChecked() || buttonAluno.isChecked()){
+                if (buttonMotorista.isChecked() || buttonAluno.isChecked()) {
 
-                    if( verificaEmail(email) && (!senha.equals(""))){
+                    if (verificaEmail(email) && (!senha.equals(""))) {
 
                         Usuario usuario = new Usuario(email, senha, false);
 
-                        if(buttonMotorista.isChecked()){
-                            //login(usuario, motorista);
-                            if(login(usuario, motorista)) {
-                                // Vai para a tela de motorista
-                                //startActivity(new Intent(MainActivity.this, Motorista.class));
-                            }// end if
-                        }// end if
-                        if(buttonAluno.isChecked()){
+                        //login(usuario, motorista);
+                        // end if
+                        if (buttonMotorista.isChecked()) {
+                            login(usuario, motorista);
+                        }
+                        if (buttonAluno.isChecked()) {
                             System.out.println("Entrou");
+                            isClient = true;
                             //login(usuario, cliente);
                             System.out.println(login(usuario, cliente) + " Status novo");
-                            if(login(usuario, cliente)) {
+                            if (login(usuario, cliente)) {
                                 System.out.println("Entrou4");
                                 // Vai para a tela de cliente
-                                startActivity(new Intent(MainActivity.this, PincipalCliente.class));
+                                startActivity(new Intent(MainActivity.this, PrincipalCliente.class));
                             }// end if
                         }// end if
-                    }else{
+                    } else {
                         Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
                     }// end if
-                }else {
+                } else {
                     Toast.makeText(getApplicationContext(), "Selecione uma opção.", Toast.LENGTH_SHORT).show();
                 }// end if
             }
@@ -92,11 +95,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        loginSucesso.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    if (!isClient)
+                        startActivity(new Intent(MainActivity.this, PrincipalMotorista.class));
+                    else
+                        startActivity(new Intent(MainActivity.this, PrincipalCliente.class));
+                }
+            }
+        });
     }
 
-    private boolean verificaEmail(String email){
+    private boolean verificaEmail(String email) {
         boolean resposta = false;
-        if(!email.equals("") && email.contains("@") && (email.contains(".com") || email.contains(".br")))
+        if (!email.equals("") && email.contains("@") && (email.contains(".com") || email.contains(".br")))
             resposta = true;
         return resposta;
     }// end verificaEmail()
@@ -119,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                     if (email.equals(usuario.getEmail()) && senha.equals(usuario.getSenha())) {
                         System.out.println("Entrou3");
                         usuario.setStatus(true);
-                        criado = true;
+                        loginSucesso.postValue(true);
                         System.out.println(criado + "NePossivel");
                     } else {
                         Toast.makeText(getApplicationContext(), "Usuário não encontrado.", Toast.LENGTH_SHORT).show();
@@ -129,11 +143,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_LONG).show();
             }
         });
 
-        System.out.println(criado+" Criado");
+        System.out.println(criado + " Criado");
 
         return criado;
     }// end login()
