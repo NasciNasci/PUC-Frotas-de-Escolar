@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText emailUsuario;
     private EditText senhaUsuario;
     private Button entrar;
-    private Button cadastrar;
+    private TextView cadastrar;
 
     boolean criado = false;
 
