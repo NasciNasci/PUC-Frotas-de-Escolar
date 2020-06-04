@@ -50,31 +50,27 @@ public class MainActivity extends AppCompatActivity {
                 String email = emailUsuario.getText().toString();
                 String senha = senhaUsuario.getText().toString();
 
-                if(buttonMotorista.isChecked() || buttonAluno.isChecked()){
 
-                    if( verificaEmail(email) && (!senha.equals(""))){
+                if( verificaEmail(email) && (!senha.equals(""))){
 
-                        Usuario usuario = new Usuario(email, senha, false);
+                    Usuario usuario = new Usuario(email, senha, false);
 
-                        if(buttonMotorista.isChecked()){
-                            login(usuario, motorista);
-                            if(usuario.getStatus() == true) {
-                                // Vai para a tela de motorista
-                                //startActivity(new Intent(MainActivity.this, Motorista.class));
-                            }// end if
+                    if(buttonMotorista.isChecked()){
+                        login(usuario, motorista);
+                        if(usuario.getStatus() == true) {
+                            // Vai para a tela de motorista
+                            startActivity(new Intent(MainActivity.this, PrincipalMotorista.class));
                         }// end if
-                        if(buttonAluno.isChecked()){
-                            login(usuario, cliente);
-                            if(usuario.getStatus() == true) {
-                                // Vai para a tela de cliente
-                                startActivity(new Intent(MainActivity.this, PincipalCliente.class));
-                            }// end if
-                        }// end if
-                    }else{
-                        Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
                     }// end if
-                }else {
-                    Toast.makeText(getApplicationContext(), "Selecione uma opção.", Toast.LENGTH_SHORT).show();
+                    if(buttonAluno.isChecked()){
+                        login(usuario, cliente);
+                        if(usuario.getStatus() == true) {
+                            // Vai para a tela de cliente
+                            startActivity(new Intent(MainActivity.this, PincipalCliente.class));
+                        }// end if
+                    }// end if
+                }else{
+                    Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
                 }// end if
             }
         });
