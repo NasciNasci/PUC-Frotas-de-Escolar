@@ -39,7 +39,6 @@ public class Cadastrar extends AppCompatActivity {
         textConfirmaSenha = findViewById(R.id.edit_confirma_senha);
         Button cadastrar = findViewById(R.id.botao_entrar);
 
-
         cadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,9 +48,7 @@ public class Cadastrar extends AppCompatActivity {
                 String senha2 = textConfirmaSenha.getText().toString();
 
                 if ((!nome.equals("")) && (!senha1.equals("")) && (!senha2.equals(""))) {
-
-                    if(verificaEmail(email)) {
-
+                    if (verificaEmail(email)) {
                         if (senha1.equals(senha2)) {
                             if (buttonMotorista.isChecked()) {
                                 Motorista motorista = new Motorista(nome, email, senha1);
@@ -59,20 +56,27 @@ public class Cadastrar extends AppCompatActivity {
                                 motorista.setInstituicoesAtendidas("");
                                 motorista.setLocaisAtendidos("");
                                 motorista.setTelefone("");
-                                if (motorista.create(motorista, motoristaDatabase))
+                                if (motorista.create(motorista, motoristaDatabase).getStatus()) {
+                                    Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
+                                } else {
                                     Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
+                                }
                             }
                             if (buttonAluno.isChecked()) {
                                 Cliente cliente = new Cliente(nome, email, senha1);
-                                if (cliente.create(cliente, clienteDatabase))
+                                if (cliente.create(cliente, clienteDatabase).getStatus()) {
+                                    Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
+                                } else {
                                     Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                            Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
+                            if (!buttonMotorista.isChecked() && !buttonAluno.isChecked()) {
+                                Toast.makeText(getApplicationContext(), "Escolha o tipo da conta.", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(getApplicationContext(), "Senhas diferentes. Confirme novamente.", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Email inválido.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -80,7 +84,6 @@ public class Cadastrar extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private boolean verificaEmail(String email) {
@@ -89,6 +92,4 @@ public class Cadastrar extends AppCompatActivity {
             resposta = true;
         return resposta;
     }
-
-
 }

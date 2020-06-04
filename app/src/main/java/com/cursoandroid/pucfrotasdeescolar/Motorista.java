@@ -12,26 +12,26 @@ public class Motorista extends Usuario {
     }
 
     public Motorista(String email, String senha) {
-        this.email = email;
-        this.senha = senha;
+        this.setEmail(email);
+        this.setSenha(senha);
     }
 
     public Motorista(String nome, String email, String senha) {
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
+        this.setNome(nome);
+        this.setEmail(email);
+        this.setSenha(senha);
     }
 
     public Motorista(String id, String nome, String email, String senha) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
+        this.setId(id);
+        this.setNome(nome);
+        this.setEmail(email);
+        this.setSenha(senha);
     }
 
     public String toString() {
-        return this.nome + "\n"
-                + email + "\n"
+        return this.getNome() + "\n"
+                + this.getEmail() + "\n"
                 + "Instituições Atendidas: " + this.instituicoesAtendidas;
     }
 
@@ -43,11 +43,11 @@ public class Motorista extends Usuario {
         this.locaisAtendidos = locaisAtendidos;
     }
 
-    public void setTelefone(String telefone){
+    public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
 
-    public void setAcessos(int acessos){
+    public void setAcessos(int acessos) {
         this.acessos = acessos;
     }
 
@@ -59,11 +59,11 @@ public class Motorista extends Usuario {
         return this.locaisAtendidos;
     }
 
-    public String getTelefone(String telefone){
+    public String getTelefone(String telefone) {
         return this.telefone;
     }
 
-    public int getAcessos(){
+    public int getAcessos() {
         return this.acessos;
     }
 }

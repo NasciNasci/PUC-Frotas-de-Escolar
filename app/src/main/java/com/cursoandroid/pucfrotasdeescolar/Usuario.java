@@ -10,12 +10,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 public class Usuario {
-    protected String id;
-    protected String nome;
-    protected String email;
-    protected String senha;
-    protected boolean status;
-    protected boolean usuarioJaCadastrado;
+    private String id;
+    private String nome;
+    private String email;
+    private String senha;
+    private boolean status;
+    private boolean cadastrado;
 
     public Usuario() {
         new Usuario("", "", "");
@@ -69,6 +69,10 @@ public class Usuario {
         this.status = status;
     }
 
+    public void setCadastrado(boolean cadastrado) {
+        this.cadastrado = cadastrado;
+    }
+
     public String getId() {
         return this.id;
     }
@@ -89,20 +93,27 @@ public class Usuario {
         return this.status;
     }
 
-    public boolean create(final Usuario usuario, final DatabaseReference databaseReference) {
-        usuarioJaCadastrado = false;
+    public boolean getCadastrado() {
+        return this.cadastrado;
+    }
+
+    public Usuario create(final Usuario usuario, final DatabaseReference databaseReference) {
+
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String idUsuario = Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
-                setId(idUsuario);
-                usuarioJaCadastrado = dataSnapshot.hasChild(idUsuario);
+                cadastrado = dataSnapshot.hasChild(idUsuario);
 
-                if (usuarioJaCadastrado) {
-                    usuarioJaCadastrado = true;
+                if (cadastrado) {
+                    usuario.setStatus(false);
                 } else {
                     databaseReference.child(idUsuario).setValue(usuario);
+                    usuario.setStatus(true);
                 }
+
+                usuario.setId(idUsuario);
+                usuario.setCadastrado(cadastrado);
             }
 
             @Override
@@ -111,6 +122,35 @@ public class Usuario {
             }
         });
 
-        return usuarioJaCadastrado;
+        return usuario;
+    }
+
+    public Usuario login(final Usuario usuario, final DatabaseReference databaseReference) {
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String idUsuario = Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
+                cadastrado = dataSnapshot.hasChild(idUsuario);
+
+                if (!cadastrado) {
+                    usuario.setStatus(false);
+                } else {
+                    if (usuario.getEmail().equals(dataSnapshot.child(idUsuario).child("email").getValue().toString()) && usuario.getSenha().equals(dataSnapshot.child(idUsuario).child("senha").getValue().toString())) {
+                        usuario.setStatus(true);
+                    }
+                }
+
+                usuario.setId(idUsuario);
+                usuario.setCadastrado(cadastrado);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return usuario;
     }
 }
