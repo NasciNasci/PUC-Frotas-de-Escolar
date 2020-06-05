@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Frotas de Escolar</string>
-    <string name="insira_seu_nome">Insira seu nome!</string>
-    <string name="insira_seu_email">Insira seu email!</string>
-    <string name="insira_sua_senha">Insira sua senha!</string>
-    <string name="confirme_sua_senha">Confime sua senha!</string>
+    <string name="insira_seu_nome">Insira seu nome</string>
+    <string name="insira_seu_email">Insira seu email</string>
+    <string name="insira_sua_senha">Insira sua senha</string>
+    <string name="confirme_sua_senha">Confime sua senha</string>
     <string name="login">Login</string>
     <string name="cadastrar">Cadastrar</string>
     <string name="descricao">Descrição</string>
@@ -16,4 +16,9 @@
     <string name="cliente">Cliente</string>
     <string name="instituicoes">Intistuições de Ensino Atendidas</string>
     <string name="listar">listar</string>
+    <string name="nao_tem_conta">Não tem uma conta ainda?</string>
+    <string name="ou">ou</string>
+    <string name="nome">Nome:</string>
+    <string name="email">Email:</string>
+    <string name="telefone__2">Telefone:</string>
 </resources>

@@ -2,6 +2,7 @@ package com.cursoandroid.pucfrotasdeescolar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -59,8 +60,13 @@ public class Cadastrar extends AppCompatActivity {
                                 motorista.setInstituicoesAtendidas("");
                                 motorista.setLocaisAtendidos("");
                                 motorista.setTelefone("");
-                                if (motorista.create(motorista, motoristaDatabase))
+                                if (motorista.create(motorista, motoristaDatabase)) {
                                     Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Intent intent = new Intent(Cadastrar.this, PrincipalMotorista.class);
+                                    intent.putExtra("email", email);
+                                    startActivity(intent);
+                                }
                             }
                             if (buttonAluno.isChecked()) {
                                 Cliente cliente = new Cliente(nome, email, senha1);

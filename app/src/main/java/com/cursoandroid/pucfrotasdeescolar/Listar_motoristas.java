@@ -1,7 +1,9 @@
 package com.cursoandroid.pucfrotasdeescolar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
@@ -19,26 +21,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.lang.String;
 
-public class Listar_motoristas extends AppCompatActivity {
+public class Listar_motoristas extends AppCompatActivity implements OnClickListener<Motorista> {
 
-    private ListView listView;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference contaoDatabaseReference = databaseReference.child("Motorista");
-    private ArrayAdapter<Motorista> adapter;
+    private MotoristaAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_motoristas);
-
-        List<Motorista> motoristas;
-        listView = (ListView) findViewById(R.id.listview_id);
-        listView.setAdapter(null);
+        adapter = new MotoristaAdapter(this);
+        RecyclerView listaMotorista = (RecyclerView) findViewById(R.id.listview_id);
+        listaMotorista.setAdapter(adapter);
 
         contaoDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Motorista> motoristas = new ArrayList<Motorista>();
+                List<Motorista> motoristas = new ArrayList<>();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Motorista motorista = new Motorista();
                     motorista.setNome(postSnapshot.child("nome").getValue().toString());
@@ -49,31 +49,22 @@ public class Listar_motoristas extends AppCompatActivity {
                     //motorista.setTelefone(postSnapshot.child("telefone").getValue().toString());
                     //motorista.setAcessos(Integer.parseInt(postSnapshot.child("acessos").getValue().toString()));
                     motoristas.add(motorista);
-                    motorista = null;
                 }
-                adapter = new
-                        ArrayAdapter<Motorista>(getApplicationContext(),
-                        android.R.layout.simple_list_item_1, motoristas);
-                listView.setAdapter(adapter);
+                adapter.setList(motoristas);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError)
-            {
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the selected item text from ListView
-                String itemSelecionado = (String) parent.getItemAtPosition(position);
-                String email = itemSelecionado.split("\n")[1];
-
-                String idMotorista = Base64.encodeToString(email.getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
-
-                // direcionar para a tela do motorista mandando o id do motorista
+            public void onCancelled(DatabaseError databaseError) {
             }
         });
     }
+
+    @Override
+    public void onClick(Motorista motorista) {
+        startActivity(new Intent(Listar_motoristas.this, MainActivity.class));
+    }
+}
+
+interface OnClickListener<T> {
+    void onClick(T T);
 }
