@@ -1,17 +1,22 @@
 package com.cursoandroid.pucfrotasdeescolar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Cadastrar extends AppCompatActivity {
 
@@ -25,6 +30,7 @@ public class Cadastrar extends AppCompatActivity {
     private EditText textNome;
     private EditText textEmail;
     private EditText textSenha;
+    private String email;
     private EditText textConfirmaSenha;
 
     @Override
@@ -40,45 +46,48 @@ public class Cadastrar extends AppCompatActivity {
         textConfirmaSenha = findViewById(R.id.edit_confirma_senha);
         Button cadastrar = findViewById(R.id.botao_entrar);
 
-
         cadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String nome = textNome.getText().toString();
-                String email = textEmail.getText().toString();
+                email = textEmail.getText().toString();
                 String senha1 = textSenha.getText().toString();
                 String senha2 = textConfirmaSenha.getText().toString();
 
                 if ((!nome.equals("")) && (!senha1.equals("")) && (!senha2.equals(""))) {
-
-                    if(verificaEmail(email)) {
-
+                    if (verificaEmail(email)) {
                         if (senha1.equals(senha2)) {
                             if (buttonMotorista.isChecked()) {
-                                Motorista motorista = new Motorista(nome, email, senha1);
+                                final Motorista motorista = new Motorista(nome, email, senha1);
                                 motorista.setAcessos(0);
                                 motorista.setInstituicoesAtendidas("");
                                 motorista.setLocaisAtendidos("");
                                 motorista.setTelefone("");
-                                if (motorista.create(motorista, motoristaDatabase)) {
-                                    Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
-                                }else{
+                                motorista.setDescricao("");
+                                if (motorista.create(motorista, motoristaDatabase).getStatus()) {
+                                    Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(Cadastrar.this, PrincipalMotorista.class);
                                     intent.putExtra("email", email);
                                     startActivity(intent);
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                             if (buttonAluno.isChecked()) {
                                 Cliente cliente = new Cliente(nome, email, senha1);
-                                if (cliente.create(cliente, clienteDatabase))
+                                if (cliente.create(cliente, clienteDatabase).getStatus()) {
+                                    Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
+                                } else {
                                     Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                            Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
+                            if (!buttonMotorista.isChecked() && !buttonAluno.isChecked()) {
+                                Toast.makeText(getApplicationContext(), "Escolha o tipo da conta.", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(getApplicationContext(), "Senhas diferentes. Confirme novamente.", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Email inválido.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -86,7 +95,6 @@ public class Cadastrar extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private boolean verificaEmail(String email) {
@@ -95,6 +103,4 @@ public class Cadastrar extends AppCompatActivity {
             resposta = true;
         return resposta;
     }
-
-
 }

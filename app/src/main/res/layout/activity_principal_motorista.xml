@@ -27,8 +27,14 @@
             app:cardCornerRadius="60dp"
             app:layout_constraintBottom_toTopOf="@+id/guideline23"
             app:layout_constraintStart_toStartOf="@+id/guideline14"
-            app:layout_constraintTop_toTopOf="@+id/guideline31" >
+            app:layout_constraintTop_toTopOf="@+id/guideline31">
 
+            <ImageView
+                android:id="@+id/img_motorista"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/motorista1" />
         </androidx.cardview.widget.CardView>
 
         <androidx.constraintlayout.widget.Guideline
@@ -36,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.075" />
+            app:layout_constraintGuide_percent="0.07" />
 
         <TextView
             android:id="@+id/textView13"
@@ -50,14 +56,29 @@
             app:layout_constraintBottom_toTopOf="@+id/guideline32"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="@+id/guideline32" />
+        <TextView
+            android:id="@+id/txt_nome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/fredoka_one"
+            android:text="@string/resposta_nome"
+            android:textColor="@color/fontColor"
+            android:textSize="@dimen/tamanho_credenciais"
+            app:layout_constraintBottom_toTopOf="@+id/guideline32"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="@+id/guideline22"
+            app:layout_constraintTop_toTopOf="@+id/guideline32"
+            app:layout_constraintVertical_bias="0.45" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline34"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="20dp"
+            app:layout_constraintGuide_begin="93dp"
             app:layout_constraintGuide_percent="0.1" />
+
 
         <TextView
             android:id="@+id/textView14"
@@ -68,30 +89,32 @@
             android:text="@string/email"
             android:textColor="@color/fontColor"
             android:textSize="@dimen/tamanho_credenciais"
-            app:layout_constraintBottom_toTopOf="@+id/guideline34"
+            app:layout_constraintBottom_toTopOf="@+id/guideline33"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/guideline34" />
+            app:layout_constraintTop_toTopOf="@+id/guideline33"
+            app:layout_constraintVertical_bias="0.45" />
 
+        <TextView
+            android:id="@+id/txt_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/fredoka_one"
+            android:text="@string/resposta_email"
+            android:textColor="@color/fontColor"
+            android:textSize="@dimen/tamanho_credenciais"
+            app:layout_constraintBottom_toTopOf="@+id/guideline33"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="@+id/guideline22"
+            app:layout_constraintTop_toTopOf="@+id/guideline33"
+            app:layout_constraintVertical_bias="0.45" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline33"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.125" />
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/fredoka_one"
-            android:text="@string/telefone__2"
-            android:textColor="@color/fontColor"
-            android:textSize="@dimen/tamanho_credenciais"
-            app:layout_constraintBottom_toTopOf="@+id/guideline33"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/guideline33" />
+            app:layout_constraintGuide_begin="75dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline23"
@@ -111,13 +134,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/fredoka_one"
                     android:text="@string/descricao"
                     android:textColor="@color/fontColor"
@@ -136,6 +160,7 @@
                     android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/fredoka_one"
                     android:text="@string/telefone"
                     android:textColor="@color/fontColor"
@@ -153,6 +178,7 @@
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/fredoka_one"
                     android:text="@string/bairros"
                     android:textColor="@color/fontColor"
@@ -171,6 +197,7 @@
                     android:id="@+id/textView12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/fredoka_one"
                     android:text="@string/instituicoes"
                     android:textColor="@color/fontColor"
@@ -178,12 +205,108 @@
 
                 <EditText
                     android:id="@+id/editText_instuicoes"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_round_corners"
                     android:ems="10"
                     android:gravity="start|top"
                     android:inputType="textMultiLine" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_titulo_acessos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:fontFamily="@font/fredoka_one"
+                        android:text="@string/cliques"
+                        android:textColor="@color/fontColor"
+                        android:textSize="@dimen/tamanho_credenciais" />
+
+                    <TextView
+                        android:id="@+id/txt_quantidade_acessos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/fredoka_one"
+                        android:text="@string/quantidade"
+                        android:textColor="@color/fontColor"
+                        android:textSize="@dimen/tamanho_credenciais" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txt_imagens_van"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fredoka_one"
+                    android:text="@string/imagens"
+                    android:textColor="@color/fontColor"
+                    android:textSize="@dimen/tamanho_credenciais" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="start"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:srcCompat="@android:drawable/screen_background_light" />
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="end"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:srcCompat="@android:drawable/screen_background_light" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="start"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:srcCompat="@android:drawable/screen_background_light" />
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="end"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:srcCompat="@android:drawable/screen_background_light" />
+                </LinearLayout>
+
             </LinearLayout>
 
         </ScrollView>
@@ -194,7 +317,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
+            app:layout_constraintGuide_percent="0.43" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
@@ -231,14 +354,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.75" />
+            app:layout_constraintGuide_percent="0.87" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.8" />
+            app:layout_constraintGuide_percent="0.9" />
 
         <Button
             android:id="@+id/botao_salvar"
