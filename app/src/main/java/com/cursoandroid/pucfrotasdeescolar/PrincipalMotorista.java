@@ -6,17 +6,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.storage.StorageManager;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.webkit.WebChromeClient;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,15 +33,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.List;
 
 public class PrincipalMotorista extends AppCompatActivity {
 
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference motoristaDataBase = databaseReference.child("Motorista");
-    //private StorageReference storageReference = ;
+
+    private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     private Intent intent;
 
     private CardView cardView;
@@ -45,7 +54,7 @@ public class PrincipalMotorista extends AppCompatActivity {
     private ImageView imagemVan2;
     private ImageView imagemVan3;
     private ImageView imagemVan4;
-
+    //private static final int IMAGE_GALLERY_REQUEST = 1;
     private Motorista motorista = new Motorista();
 
     private EditText textDescricao;
@@ -56,9 +65,10 @@ public class PrincipalMotorista extends AppCompatActivity {
     private TextView nome;
     private TextView textViewEmail;
     private Button buttonSalvar;
-    private String email2;
+    private String email;
 
     public Uri uri;
+    public int numeroImagem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +92,55 @@ public class PrincipalMotorista extends AppCompatActivity {
 
 
         intent = getIntent();
-        email2 = intent.getStringExtra("email");
+        email = intent.getStringExtra("email");
+
         imprimeTela();
+
+      /*  intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        imagemPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                numeroImagem = 1;
+                startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem de perfil."), 123);
+            }
+        });
+
+        imagemVan1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                numeroImagem = 2;
+                startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
+            }
+        });
+
+        imagemVan2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                numeroImagem = 3;
+                startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
+            }
+        });
+
+        imagemVan3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                numeroImagem = 4;
+                startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
+            }
+        });
+
+        imagemVan4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                numeroImagem = 5;
+                startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
+            }
+        });*/
 
         buttonSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,64 +156,26 @@ public class PrincipalMotorista extends AppCompatActivity {
                     motorista.setInstituicoesAtendidas(instituicoes);
                     motorista.setTelefone(telefone);
 
-                    motoristaDataBase.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            String idUsuario = Base64.encodeToString(motorista.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
-                            motoristaDataBase.child(idUsuario).setValue(motorista);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                        Toast.makeText(getApplicationContext(), "Informações salvas com sucesso.", Toast.LENGTH_SHORT).show();
-                        //Intent intent = new Intent(Cadastrar.this, PrincipalMotorista.class);
-                       // intent.putExtra("email", email);
-                        //startActivity(intent);
-
+                    if (motorista.create(motorista, motoristaDataBase).getStatus()) {
+                        Toast.makeText(getApplicationContext(), "Informações cadastradas com sucesso.", Toast.LENGTH_SHORT).show();
+                    }
                 }else {
                     Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
                 }
-
-                escolherFoto();
-
+                //uploadFirebase();
             }
         });
 
     }
-//Glide.with(MainActivity.this).load("gs://doe-amor.appspot.com/calendario_app.png").into(suaImageView);
-    /*
-    public class MainActivity extends AppCompatActivity {
-    private ImageView proximaAcao;
-    private ImageView galeria;
-    private ImageView calendario;
-    private ImageView contatos;
 
-
-
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-
-    proximaAcao = (ImageView) findViewById(R.id.proxima_acao_id);
-    galeria = (ImageView) findViewById(R.id.galeria_id);
-    calendario = (ImageView) findViewById(R.id.calendario_id);
-    contatos = (ImageView) findViewById(R.id.contatos_id);
-
-
-    Glide.with(MainActivity.this).load("gs://doe-amor.appspot.com/calendario_app.png");
-     */
     private void imprimeTela(){
         motoristaDataBase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String idMotorista = Base64.encodeToString(email2.getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
+                String idMotorista = Base64.encodeToString(email.getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
                 boolean motoristaCadastrado = dataSnapshot.hasChild(idMotorista);
                 if(motoristaCadastrado){
-                    motorista.setEmail(email2);
+                    motorista.setEmail(email);
                     motorista.setNome(dataSnapshot.child(idMotorista).child("nome").getValue().toString());
                     motorista.setDescricao(dataSnapshot.child(idMotorista).child("descricao").getValue().toString());
                     motorista.setTelefone(dataSnapshot.child(idMotorista).child("telefone").getValue().toString());
@@ -185,20 +204,51 @@ protected void onCreate(Bundle savedInstanceState) {
         });
     }
 
-
-    private void escolherFoto(){
-        intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 1);
-    }
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1 && resultCode == RESULT_OK && data!=null && data.getData()!=null){
+        //if(requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null){
+            //uri = data.getData();
+
+        //}
+        if(requestCode == IMAGE_GALLERY_REQUEST && resultCode == RESULT_OK && data!= null){
             uri = data.getData();
-            imagemPerfil.setImageURI(uri);
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getContentResolver().query(uri,filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+            switch(numeroImagem){
+                case 1:
+                    imagemPerfil.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                    break;
+                case 2:
+                    imagemVan1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                    break;
+                case 3:
+                    imagemVan2.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                    break;
+                case 4:
+                    imagemVan3.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                    break;
+                case 5:
+                    imagemVan4.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                    break;
+                default:
+            }
+
         }
+    }*/
+/*
+    private String getExtension(Uri uri){
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
     }
+    private void uploadFirebase(){
+        uri = Uri.fromFile(new File("images/" + motorista.getId()));
+        StorageReference idRef = storageReference.child("")
+    }*/
 }
