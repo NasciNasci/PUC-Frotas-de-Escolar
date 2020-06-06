@@ -33,18 +33,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
-import java.io.File;
-import java.util.List;
 
 public class PrincipalMotorista extends AppCompatActivity {
 
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference motoristaDataBase = databaseReference.child("Motorista");
 
-    private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     private Intent intent;
 
     private CardView cardView;
@@ -84,7 +78,7 @@ public class PrincipalMotorista extends AppCompatActivity {
         textViewEmail = (TextView) findViewById(R.id.txt_email);
         buttonSalvar = (Button) findViewById(R.id.botao_salvar);
 
-        imagemPerfil =(ImageView) findViewById(R.id.img_motorista);
+        imagemPerfil = (ImageView) findViewById(R.id.img_motorista);
         imagemVan1 = (ImageView) findViewById(R.id.imageView);
         imagemVan2 = (ImageView) findViewById(R.id.imageView2);
         imagemVan3 = (ImageView) findViewById(R.id.imageView3);
@@ -150,16 +144,13 @@ public class PrincipalMotorista extends AppCompatActivity {
                 final String telefone = textTelefone.getText().toString();
                 final String instituicoes = textInstituicoes.getText().toString();
 
-                if((!descricao.equals("")) && (!bairro.equals("")) && (!telefone.equals("")) && (telefone.length() <= 9) && (!instituicoes.equals(""))){
+                if ((!descricao.equals("")) && (!bairro.equals("")) && (!telefone.equals("")) && (telefone.length() <= 9) && (!instituicoes.equals(""))) {
                     motorista.setDescricao(descricao);
                     motorista.setLocaisAtendidos(bairro);
                     motorista.setInstituicoesAtendidas(instituicoes);
                     motorista.setTelefone(telefone);
-
-                    if (motorista.create(motorista, motoristaDataBase).getStatus()) {
-                        Toast.makeText(getApplicationContext(), "Informações cadastradas com sucesso.", Toast.LENGTH_SHORT).show();
-                    }
-                }else {
+                    create(motorista, motoristaDataBase);
+                } else {
                     Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
                 }
                 //uploadFirebase();
@@ -168,13 +159,13 @@ public class PrincipalMotorista extends AppCompatActivity {
 
     }
 
-    private void imprimeTela(){
+    private void imprimeTela() {
         motoristaDataBase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String idMotorista = Base64.encodeToString(email.getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
                 boolean motoristaCadastrado = dataSnapshot.hasChild(idMotorista);
-                if(motoristaCadastrado){
+                if (motoristaCadastrado) {
                     motorista.setEmail(email);
                     motorista.setNome(dataSnapshot.child(idMotorista).child("nome").getValue().toString());
                     motorista.setDescricao(dataSnapshot.child(idMotorista).child("descricao").getValue().toString());
@@ -182,11 +173,11 @@ public class PrincipalMotorista extends AppCompatActivity {
                     motorista.setInstituicoesAtendidas(dataSnapshot.child(idMotorista).child("instituicoesAtendidas").getValue().toString());
                     motorista.setAcessos(Integer.parseInt(dataSnapshot.child(idMotorista).child("acessos").getValue().toString()));
                     motorista.setLocaisAtendidos(dataSnapshot.child(idMotorista).child("locaisAtendidos").getValue().toString());
-                }else{
+                } else {
                     motorista = null;
                 }
 
-                if(motorista != null){
+                if (motorista != null) {
                     nome.setText(motorista.getNome());
                     textViewEmail.setText(motorista.getEmail());
                     textDescricao.setText(motorista.getDescricao());
@@ -194,6 +185,37 @@ public class PrincipalMotorista extends AppCompatActivity {
                     textInstituicoes.setText(motorista.getInstituicoesAtendidas());
                     textTelefone.setText(motorista.getTelefone());
                     numeroCliques.setText(Integer.toString(motorista.getAcessos()));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void create(final Usuario usuario, final DatabaseReference databaseReference) {
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usuario.setId(Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", ""));
+                boolean cadastrado = dataSnapshot.hasChild(usuario.getId());
+
+                if (!cadastrado) {
+                    databaseReference.child(usuario.getId()).setValue(usuario);
+                    Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
+
+                    if (usuario.getClass().equals(Motorista.class)) {
+                        Intent intent = new Intent(getApplicationContext(), PrincipalMotorista.class);
+                        intent.putExtra("email", usuario.getEmail());
+                        startActivity(intent);
+                    } else {
+                        startActivity(new Intent(getApplicationContext(), Listar_motoristas.class));
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
                 }
             }
 
