@@ -27,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
     private DatabaseReference motorista = databaseReference.child("Motorista");
     private DatabaseReference cliente = databaseReference.child("Cliente");
-    MutableLiveData<Boolean> loginSucesso = new MutableLiveData<>();
-    boolean isClient = false;
 
     private RadioButton buttonMotorista;
     private RadioButton buttonAluno;
@@ -36,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText senhaUsuario;
     private Button entrar;
     private TextView cadastrar;
-
-    boolean criado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,22 +58,11 @@ public class MainActivity extends AppCompatActivity {
                     if (verificaEmail(email) && (!senha.equals(""))) {
 
                         Usuario usuario = new Usuario(email, senha, false);
-
-                        //login(usuario, motorista);
-                        // end if
                         if (buttonMotorista.isChecked()) {
-                            login(usuario, motorista);
+                            login(usuario, motorista, 0);
                         }
                         if (buttonAluno.isChecked()) {
-                            System.out.println("Entrou");
-                            isClient = true;
-                            //login(usuario, cliente);
-                            System.out.println(login(usuario, cliente) + " Status novo");
-                            if (login(usuario, cliente)) {
-                                System.out.println("Entrou4");
-                                // Vai para a tela de cliente
-                                startActivity(new Intent(MainActivity.this, PrincipalCliente.class));
-                            }// end if
+                            login(usuario, cliente, 1);
                         }// end if
                     } else {
                         Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
@@ -96,17 +81,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        loginSucesso.observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    if (!isClient)
-                        startActivity(new Intent(MainActivity.this, PrincipalMotorista.class));
-                    else
-                        startActivity(new Intent(MainActivity.this, PrincipalCliente.class));
-                }
-            }
-        });
     }
 
     private boolean verificaEmail(String email) {
@@ -116,10 +90,9 @@ public class MainActivity extends AppCompatActivity {
         return resposta;
     }// end verificaEmail()
 
-    private boolean login(final Usuario usuario, final DatabaseReference databaseReference) {
+    private void login(final Usuario usuario, final DatabaseReference databaseReference, final int tipoDeUsuario) {
         final String email = usuario.getEmail();
         final String senha = usuario.getSenha();
-        criado = false;
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -127,15 +100,18 @@ public class MainActivity extends AppCompatActivity {
                 boolean usuarioCadatrado = dataSnapshot.hasChild(idUsuario);
 
                 if (usuarioCadatrado) {
-                    System.out.println("Entrou2");
                     usuario.setEmail(dataSnapshot.child(idUsuario).child("email").getValue().toString());
                     usuario.setSenha(dataSnapshot.child(idUsuario).child("senha").getValue().toString());
 
                     if (email.equals(usuario.getEmail()) && senha.equals(usuario.getSenha())) {
-                        System.out.println("Entrou3");
                         usuario.setStatus(true);
-                        loginSucesso.postValue(true);
-                        System.out.println(criado + "NePossivel");
+                        databaseReference.child(idUsuario).setValue(usuario);
+                        if(tipoDeUsuario == 0)
+                            startActivity(new Intent(getApplicationContext(), PrincipalMotorista.class));
+                        else
+                            startActivity(new Intent(getApplicationContext(), PrincipalCliente.class));
+
+
                     } else {
                         Toast.makeText(getApplicationContext(), "Usuário não encontrado.", Toast.LENGTH_SHORT).show();
                     }// end if
@@ -148,9 +124,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        System.out.println(criado + " Criado");
-
-        return criado;
     }// end login()
 
 
