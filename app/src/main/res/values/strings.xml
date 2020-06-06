@@ -21,4 +21,9 @@
     <string name="nome">Nome:</string>
     <string name="email">Email:</string>
     <string name="telefone__2">Telefone:</string>
+    <string name="imagens">Galeria do escolar</string>
+    <string name="cliques">Número de acessos:</string>
+    <string name="quantidade"></string>
+    <string name="resposta_nome"></string>
+    <string name="resposta_email"></string>
 </resources>
