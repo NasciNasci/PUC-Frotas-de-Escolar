@@ -12,6 +12,7 @@
         <activity android:name=".PrincipalCliente"></activity>
         <activity android:name=".Listar_motoristas" />
         <activity android:name=".Cadastrar" />
+        <activity android:name=".PrincipalMotorista" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="sensor">
