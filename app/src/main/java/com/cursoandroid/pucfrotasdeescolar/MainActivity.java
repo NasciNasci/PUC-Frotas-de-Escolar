@@ -106,10 +106,14 @@ public class MainActivity extends AppCompatActivity {
                     if (email.equals(usuario.getEmail()) && senha.equals(usuario.getSenha())) {
                         usuario.setStatus(true);
                         databaseReference.child(idUsuario).setValue(usuario);
-                        if(tipoDeUsuario == 0)
+                        if(tipoDeUsuario == 0) {
                             startActivity(new Intent(getApplicationContext(), PrincipalMotorista.class));
-                        else
+                            finish();
+                        }
+                        else {
                             startActivity(new Intent(getApplicationContext(), PrincipalCliente.class));
+                            finish();
+                        }
 
 
                     } else {
