@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,7 +55,6 @@ public class PrincipalMotorista extends AppCompatActivity {
     private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     private Intent intent;
 
-    private CardView cardView;
     private ImageView imagemPerfil;
 
     private ImageView imagemVan1;
@@ -108,6 +109,7 @@ public class PrincipalMotorista extends AppCompatActivity {
             public void onClick(View v) {
                 numeroImagem = 1;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                uploadImage("perfil");
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem de perfil."), 123);
             }
         });
@@ -117,6 +119,7 @@ public class PrincipalMotorista extends AppCompatActivity {
             public void onClick(View v) {
                 numeroImagem = 2;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                uploadImage("van1");
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -126,6 +129,7 @@ public class PrincipalMotorista extends AppCompatActivity {
             public void onClick(View v) {
                 numeroImagem = 3;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                uploadImage("van2");
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -135,6 +139,7 @@ public class PrincipalMotorista extends AppCompatActivity {
             public void onClick(View v) {
                 numeroImagem = 4;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                uploadImage("van3");
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -144,6 +149,7 @@ public class PrincipalMotorista extends AppCompatActivity {
             public void onClick(View v) {
                 numeroImagem = 5;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                uploadImage("van4");
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -161,14 +167,8 @@ public class PrincipalMotorista extends AppCompatActivity {
                     motorista.setLocaisAtendidos(bairro);
                     motorista.setInstituicoesAtendidas(instituicoes);
                     motorista.setTelefone(telefone);
-
-                    if (motorista.create(motorista, motoristaDataBase).getStatus()) {
-                        Toast.makeText(getApplicationContext(), "Informações cadastradas com sucesso.", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
+                    create(motorista, motoristaDataBase);
                 }
-                uploadImage();
             }
         });
 
@@ -227,76 +227,43 @@ public class PrincipalMotorista extends AppCompatActivity {
                 PICK_IMAGE_REQUEST);
         }
      */
+
+    // Override onActivityResult method
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
-        //if(requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null){
-        //uri = data.getData();
-
-        //}
-        if (requestCode == IMAGE_GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
-            uri = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            switch (numeroImagem) {
-                case 1:
-                    imagemPerfil.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                    break;
-                case 2:
-                    imagemVan1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                    break;
-                case 3:
-                    imagemVan2.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                    break;
-                case 4:
-                    imagemVan3.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                    break;
-                case 5:
-                    imagemVan4.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                    break;
-                default:
-            }
-
-        }
-    }
-
-    /*
-      // Override onActivityResult method
-    @Override
-    protected void onActivityResult(int requestCode,
-                                    int resultCode,
-                                    Intent data)
-    {
-
-        super.onActivityResult(requestCode,
-                               resultCode,
-                               data);
 
         // checking request code and result code
         // if request code is PICK_IMAGE_REQUEST and
         // resultCode is RESULT_OK
         // then set image in the image view
-        if (requestCode == PICK_IMAGE_REQUEST
-            && resultCode == RESULT_OK
-            && data != null
-            && data.getData() != null) {
+        if (requestCode == IMAGE_GALLERY_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
             // Get the Uri of data
-            filePath = data.getData();
+            uri = data.getData();
             try {
 
                 // Setting image on image view using Bitmap
-                Bitmap bitmap = MediaStore
-                                    .Images
-                                    .Media
-                                    .getBitmap(
-                                        getContentResolver(),
-                                        filePath);
-                imageView.setImageBitmap(bitmap);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                switch (numeroImagem) {
+                    case 1:
+                        imagemPerfil.setImageBitmap(bitmap);
+                        break;
+                    case 2:
+                        imagemVan1.setImageBitmap(bitmap);
+                        break;
+                    case 3:
+                        imagemVan2.setImageBitmap(bitmap);
+                        break;
+                    case 4:
+                        imagemVan3.setImageBitmap(bitmap);
+                        break;
+                    case 5:
+                        imagemVan4.setImageBitmap(bitmap);
+                        break;
+                    default:
+                }
             }
 
             catch (IOException e) {
@@ -305,9 +272,9 @@ public class PrincipalMotorista extends AppCompatActivity {
             }
         }
     }
-     */
+
     // UploadImage method
-    private void uploadImage() {
+    private void uploadImage(String identificador) {
         if (uri != null) {
 
             // Code for showing progressDialog while uploading
@@ -316,55 +283,69 @@ public class PrincipalMotorista extends AppCompatActivity {
             progressDialog.show();
 
             // Defining the child of storageReference
-            StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+            final String path = "imagens/"+ Base64.encodeToString(email.getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "") + " " + identificador;
+            final StorageReference ref = storageReference.child(path);
 
-            // adding listeners on upload
-            // or failure of image
-            ref.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            ref.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    // Image uploaded successfully
-                    // Dismiss dialog
-                    progressDialog.dismiss();
-                    Toast.makeText(PrincipalMotorista.this, "Image Uploaded!!", Toast.LENGTH_SHORT).show();
+                public void onSuccess(Uri uri) {
+                    ref.delete();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
-                public void onFailure(@NonNull Exception e) {
-                    // Error, Image not uploaded
-                    progressDialog.dismiss();
-                    Toast.makeText(PrincipalMotorista.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }) .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                // Progress Listener for loading
-                // percentage on the dialog box
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                public void onFailure(@NonNull Exception exception) {
+                    // adding listeners on upload
+                    // or failure of image
+                    ref.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            // Image uploaded successfully
+                            // Dismiss dialog
+                            progressDialog.dismiss();
+                            Toast.makeText(PrincipalMotorista.this, "Image Uploaded!!", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Error, Image not uploaded
+                            progressDialog.dismiss();
+                            Toast.makeText(PrincipalMotorista.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }) .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        // Progress Listener for loading
+                        // percentage on the dialog box
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                        }
+                    });
                 }
             });
         }
     }
 
-    private String getExtension(Uri uri) {
-        ContentResolver cr = getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
-    }
+    private void create(final Usuario usuario, final DatabaseReference databaseReference) {
 
-    /*
-    private void uploadFirebase() {
-        uri = Uri.fromFile(new File("images/" + motorista.getId()));
-        StorageReference idRef = storageReference.child(motorista.getId());
-
-        idRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // Get a URL to the uploaded content
-                Uri downloadUrl = taskSnapshot.get();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usuario.setId(Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", ""));
+                boolean cadastrado = dataSnapshot.hasChild(usuario.getId());
+
+                if (!cadastrado) {
+                    databaseReference.child(usuario.getId()).setValue(usuario);
+                    Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
+                }
             }
-        })
-    }*/
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
