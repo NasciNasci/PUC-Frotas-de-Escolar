@@ -47,18 +47,16 @@ public class MainActivity extends AppCompatActivity {
                 if ((!email.equals("")) && (!senha.equals(""))) {
                     if (verificaEmail(email)) {
                         if (buttonMotorista.isChecked()) {
-                            //Motorista motorista = new Motorista(email, senha);
                             motorista = new Motorista(email, senha);
-                            System.out.println("MAIN ACTIVIT:" + motorista.login(motorista, motoristaDatabase).getStatus());
                             if (motorista.login(motorista, motoristaDatabase).getStatus()) {
                                 Toast.makeText(getApplicationContext(), "Login realizado com sucesso.", Toast.LENGTH_SHORT).show();
+
                                 Intent intent = new Intent(MainActivity.this, PrincipalMotorista.class);
                                 intent.putExtra("email", email);
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(getApplicationContext(), "Dados incorretos.", Toast.LENGTH_SHORT).show();
                             }
-                            System.out.println(motorista.getStatus() + " STATUS");
                         }
                         if (buttonAluno.isChecked()) {
                             Cliente cliente = new Cliente(email, senha);
@@ -85,8 +83,7 @@ public class MainActivity extends AppCompatActivity {
         cadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,
-                        Cadastrar.class));
+                startActivity(new Intent(MainActivity.this, Cadastrar.class));
             }
         });
     }

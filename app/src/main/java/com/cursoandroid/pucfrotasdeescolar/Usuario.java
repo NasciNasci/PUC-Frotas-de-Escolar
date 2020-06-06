@@ -136,17 +136,12 @@ public class Usuario {
                     usuario.setStatus(false);
                 } else {
                     if (usuario.getEmail().contains(dataSnapshot.child(idUsuario).child("email").getValue().toString()) && usuario.getSenha().contains(dataSnapshot.child(idUsuario).child("senha").getValue().toString())) {
-                        System.out.println("ENTROU NO IF DO ELSE");
                         usuario.setStatus(true);
-                        System.out.println("STATUS: " + usuario.getStatus());
                     }
                 }
 
                 usuario.setId(idUsuario);
-                System.out.println("STATUS: " + usuario.getStatus());
                 usuario.setCadastrado(cadastrado);
-                System.out.println("STATUS: " + usuario.getStatus());
-                System.out.println("CADASTRADO: " + usuario.getCadastrado());
             }
 
             @Override
