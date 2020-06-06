@@ -30,7 +30,6 @@ public class Cadastrar extends AppCompatActivity {
     private EditText textNome;
     private EditText textEmail;
     private EditText textSenha;
-    private String email;
     private EditText textConfirmaSenha;
 
     @Override
@@ -50,7 +49,7 @@ public class Cadastrar extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String nome = textNome.getText().toString();
-                email = textEmail.getText().toString();
+                String email = textEmail.getText().toString();
                 String senha1 = textSenha.getText().toString();
                 String senha2 = textConfirmaSenha.getText().toString();
 
@@ -58,28 +57,17 @@ public class Cadastrar extends AppCompatActivity {
                     if (verificaEmail(email)) {
                         if (senha1.equals(senha2)) {
                             if (buttonMotorista.isChecked()) {
-                                final Motorista motorista = new Motorista(nome, email, senha1);
+                                Motorista motorista = new Motorista(nome, email, senha1);
                                 motorista.setAcessos(0);
                                 motorista.setInstituicoesAtendidas("");
                                 motorista.setLocaisAtendidos("");
                                 motorista.setTelefone("");
                                 motorista.setDescricao("");
-                                if (motorista.create(motorista, motoristaDatabase).getStatus()) {
-                                    Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(Cadastrar.this, PrincipalMotorista.class);
-                                    intent.putExtra("email", email);
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
-                                }
+                                create(motorista, motoristaDatabase);
                             }
                             if (buttonAluno.isChecked()) {
                                 Cliente cliente = new Cliente(nome, email, senha1);
-                                if (cliente.create(cliente, clienteDatabase).getStatus()) {
-                                    Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
-                                }
+                                create(cliente, clienteDatabase);
                             }
                             if (!buttonMotorista.isChecked() && !buttonAluno.isChecked()) {
                                 Toast.makeText(getApplicationContext(), "Escolha o tipo da conta.", Toast.LENGTH_SHORT).show();
@@ -102,5 +90,36 @@ public class Cadastrar extends AppCompatActivity {
         if (!email.equals("") && email.contains("@") && (email.contains(".com") || email.contains(".br")))
             resposta = true;
         return resposta;
+    }
+
+    private void create(final Usuario usuario, final DatabaseReference databaseReference) {
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usuario.setId(Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", ""));
+                boolean cadastrado = dataSnapshot.hasChild(usuario.getId());
+
+                if (!cadastrado) {
+                    databaseReference.child(usuario.getId()).setValue(usuario);
+                    Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
+
+                    if (usuario.getClass().equals(Motorista.class)) {
+                        Intent intent = new Intent(getApplicationContext(), PrincipalMotorista.class);
+                        intent.putExtra("email", usuario.getEmail());
+                        startActivity(intent);
+                    } else {
+                        startActivity(new Intent(getApplicationContext(), Listar_motoristas.class));
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
