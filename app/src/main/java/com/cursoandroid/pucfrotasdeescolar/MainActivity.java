@@ -1,9 +1,13 @@
 package com.cursoandroid.pucfrotasdeescolar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,20 +15,25 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-    private DatabaseReference motoristaDatabase = databaseReference.child("Motorista");
-    private DatabaseReference clienteDatabase = databaseReference.child("Cliente");
-    private Motorista motorista;
+    private DatabaseReference motorista = databaseReference.child("Motorista");
+    private DatabaseReference cliente = databaseReference.child("Cliente");
+
     private RadioButton buttonMotorista;
     private RadioButton buttonAluno;
     private EditText emailUsuario;
     private EditText senhaUsuario;
+    private Button entrar;
+    private TextView cadastrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         senhaUsuario = findViewById(R.id.edit_senha);
         buttonMotorista = findViewById(R.id.radio_button_motorista);
         buttonAluno = findViewById(R.id.radio_button_aluno);
-        Button entrar = findViewById(R.id.botao_entrar);
-        TextView cadastrar = findViewById(R.id.botao_criar_conta);
+        entrar = findViewById(R.id.botao_entrar);
+        cadastrar = findViewById(R.id.botao_criar_conta);
 
         entrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,41 +53,23 @@ public class MainActivity extends AppCompatActivity {
                 String email = emailUsuario.getText().toString();
                 String senha = senhaUsuario.getText().toString();
 
-                if ((!email.equals("")) && (!senha.equals(""))) {
-                    if (verificaEmail(email)) {
+                if (buttonMotorista.isChecked() || buttonAluno.isChecked()) {
+
+                    if (verificaEmail(email) && (!senha.equals(""))) {
+
+                        Usuario usuario = new Usuario(email, senha, false);
                         if (buttonMotorista.isChecked()) {
-                            //Motorista motorista = new Motorista(email, senha);
-                            motorista = new Motorista(email, senha);
-                            System.out.println("MAIN ACTIVIT:" + motorista.login(motorista, motoristaDatabase).getStatus());
-                            if (motorista.login(motorista, motoristaDatabase).getStatus()) {
-                                Toast.makeText(getApplicationContext(), "Login realizado com sucesso.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(MainActivity.this, PrincipalMotorista.class);
-                                intent.putExtra("email", email);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Dados incorretos.", Toast.LENGTH_SHORT).show();
-                            }
-                            System.out.println(motorista.getStatus() + " STATUS");
+                            login(usuario, motorista, 0);
                         }
                         if (buttonAluno.isChecked()) {
-                            Cliente cliente = new Cliente(email, senha);
-
-                            if (cliente.login(cliente, clienteDatabase).getStatus()) {
-                                Toast.makeText(getApplicationContext(), "Login realizado com sucesso.", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(MainActivity.this, PrincipalCliente.class));
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Dados incorretos.", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        if (!buttonMotorista.isChecked() && !buttonAluno.isChecked()) {
-                            Toast.makeText(getApplicationContext(), "Escolha o tipo da conta.", Toast.LENGTH_SHORT).show();
-                        }
+                            login(usuario, cliente, 1);
+                        }// end if
                     } else {
-                        Toast.makeText(getApplicationContext(), "Email inválido.", Toast.LENGTH_SHORT).show();
-                    }
+                        Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
+                    }// end if
                 } else {
-                    Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
-                }
+                    Toast.makeText(getApplicationContext(), "Selecione uma opção.", Toast.LENGTH_SHORT).show();
+                }// end if
             }
         });
 
@@ -89,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         Cadastrar.class));
             }
         });
+
     }
 
     private boolean verificaEmail(String email) {
@@ -96,5 +88,43 @@ public class MainActivity extends AppCompatActivity {
         if (!email.equals("") && email.contains("@") && (email.contains(".com") || email.contains(".br")))
             resposta = true;
         return resposta;
-    }
-}
+    }// end verificaEmail()
+
+    private void login(final Usuario usuario, final DatabaseReference databaseReference, final int tipoDeUsuario) {
+        final String email = usuario.getEmail();
+        final String senha = usuario.getSenha();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String idUsuario = Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
+                boolean usuarioCadatrado = dataSnapshot.hasChild(idUsuario);
+
+                if (usuarioCadatrado) {
+                    usuario.setEmail(dataSnapshot.child(idUsuario).child("email").getValue().toString());
+                    usuario.setSenha(dataSnapshot.child(idUsuario).child("senha").getValue().toString());
+
+                    if (email.equals(usuario.getEmail()) && senha.equals(usuario.getSenha())) {
+                        usuario.setStatus(true);
+                        databaseReference.child(idUsuario).setValue(usuario);
+                        if(tipoDeUsuario == 0)
+                            startActivity(new Intent(getApplicationContext(), PrincipalMotorista.class));
+                        else
+                            startActivity(new Intent(getApplicationContext(), PrincipalCliente.class));
+
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Usuário não encontrado.", Toast.LENGTH_SHORT).show();
+                    }// end if
+                }// end if
+            }// end if
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }// end login()
+
+
+}// end class
