@@ -30,8 +30,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,12 +59,12 @@ public class PrincipalMotorista extends AppCompatActivity {
     private Intent intent;
 
     private ImageView imagemPerfil;
-
     private ImageView imagemVan1;
     private ImageView imagemVan2;
     private ImageView imagemVan3;
     private ImageView imagemVan4;
     private static final int IMAGE_GALLERY_REQUEST = 1;
+
     private Motorista motorista = new Motorista();
 
     private EditText textDescricao;
@@ -74,8 +77,15 @@ public class PrincipalMotorista extends AppCompatActivity {
     private Button buttonSalvar;
     private String email;
 
+    private String urlPerfil;
+    private String urlVan1;
+    private String urlVan2;
+    private String urlVan3;
+    private String urlVan4;
+
     public Uri uri;
     public int numeroImagem;
+    public String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +110,7 @@ public class PrincipalMotorista extends AppCompatActivity {
 
         intent = getIntent();
         email = intent.getStringExtra("email");
-
+        System.out.println(email);
         imprimeTela();
 
         intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
@@ -110,6 +120,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                 numeroImagem = 1;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
                 uploadImage("perfil");
+                urlPerfil = url;
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem de perfil."), 123);
             }
         });
@@ -120,6 +131,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                 numeroImagem = 2;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
                 uploadImage("van1");
+                urlVan1 = urlVan1;
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -130,6 +142,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                 numeroImagem = 3;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
                 uploadImage("van2");
+                urlVan2 = url;
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -140,6 +153,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                 numeroImagem = 4;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
                 uploadImage("van3");
+                urlVan3 = url;
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -150,6 +164,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                 numeroImagem = 5;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
                 uploadImage("van4");
+                urlVan4 = url;
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -157,17 +172,34 @@ public class PrincipalMotorista extends AppCompatActivity {
         buttonSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String descricao = textDescricao.getText().toString();
-                final String bairro = textBairro.getText().toString();
-                final String telefone = textTelefone.getText().toString();
-                final String instituicoes = textInstituicoes.getText().toString();
+                String descricao = textDescricao.getText().toString();
+                String bairro = textBairro.getText().toString();
+                String telefone = textTelefone.getText().toString();
+                String instituicoes = textInstituicoes.getText().toString();
 
                 if ((!descricao.equals("")) && (!bairro.equals("")) && (!telefone.equals("")) && (telefone.length() <= 9) && (!instituicoes.equals(""))) {
+                    final Motorista motorista = new Motorista();
                     motorista.setDescricao(descricao);
                     motorista.setLocaisAtendidos(bairro);
                     motorista.setInstituicoesAtendidas(instituicoes);
                     motorista.setTelefone(telefone);
-                    create(motorista, motoristaDataBase);
+                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String idMotorista = Base64.encodeToString(email.getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
+                            boolean cadastrado = dataSnapshot.hasChild(idMotorista);
+
+                            if (!cadastrado) {
+                                databaseReference.child(motorista.getId()).setValue(motorista);
+                                Toast.makeText(getApplicationContext(), "Dados cadastrados com sucesso.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
         });
@@ -210,25 +242,6 @@ public class PrincipalMotorista extends AppCompatActivity {
         });
     }
 
-    /*
-
-        // Select Image method
-        private void SelectImage()
-        {
-
-            // Defining Implicit Intent to mobile gallery
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(
-                Intent.createChooser(
-                    intent,
-                    "Select Image from here..."),
-                PICK_IMAGE_REQUEST);
-        }
-     */
-
-    // Override onActivityResult method
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -264,9 +277,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                         break;
                     default:
                 }
-            }
-
-            catch (IOException e) {
+            } catch (IOException e) {
                 // Log the exception
                 e.printStackTrace();
             }
@@ -274,7 +285,7 @@ public class PrincipalMotorista extends AppCompatActivity {
     }
 
     // UploadImage method
-    private void uploadImage(String identificador) {
+    private void uploadImage(final String identificador) {
         if (uri != null) {
 
             // Code for showing progressDialog while uploading
@@ -283,69 +294,56 @@ public class PrincipalMotorista extends AppCompatActivity {
             progressDialog.show();
 
             // Defining the child of storageReference
-            final String path = "imagens/"+ Base64.encodeToString(email.getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "") + " " + identificador;
+            final String path = "imagens/" + Base64.encodeToString(email.getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "") + " " + identificador;
             final StorageReference ref = storageReference.child(path);
 
-            ref.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            final UploadTask uploadTask = ref.putFile(uri);
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
-                public void onSuccess(Uri uri) {
-                    ref.delete();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // adding listeners on upload
-                    // or failure of image
-                    ref.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                            // Image uploaded successfully
-                            // Dismiss dialog
-                            progressDialog.dismiss();
-                            Toast.makeText(PrincipalMotorista.this, "Image Uploaded!!", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
+                    // Image uploaded successfully
+                    // Dismiss dialog
+                    progressDialog.dismiss();
+                    Toast.makeText(PrincipalMotorista.this, "Image Uploaded!!", Toast.LENGTH_SHORT).show();
+                    Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                         @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Error, Image not uploaded
-                            progressDialog.dismiss();
-                            Toast.makeText(PrincipalMotorista.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+
+                            // Continue with the task to get the download URL
+                            return ref.getDownloadUrl();
                         }
-                    }) .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        // Progress Listener for loading
-                        // percentage on the dialog box
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                url = task.getResult().toString();
+                            } else {
+                                // Handle failures
+                                // ...
+                            }
                         }
                     });
                 }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // Error, Image not uploaded
+                    progressDialog.dismiss();
+                    Toast.makeText(PrincipalMotorista.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                // Progress Listener for loading
+                // percentage on the dialog box
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                }
             });
         }
-    }
-
-    private void create(final Usuario usuario, final DatabaseReference databaseReference) {
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                usuario.setId(Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", ""));
-                boolean cadastrado = dataSnapshot.hasChild(usuario.getId());
-
-                if (!cadastrado) {
-                    databaseReference.child(usuario.getId()).setValue(usuario);
-                    Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 }
