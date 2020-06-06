@@ -1,21 +1,10 @@
 package com.cursoandroid.pucfrotasdeescolar;
 
-import android.util.Base64;
-
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-
 public class Usuario {
     private String id;
     private String nome;
     private String email;
     private String senha;
-    private boolean status;
-    private boolean cadastrado;
 
     public Usuario() {
         new Usuario("", "", "");
@@ -42,7 +31,6 @@ public class Usuario {
     public Usuario(String email, String senha, boolean status) {
         this.email = email;
         this.senha = senha;
-        this.status = status;
     }
 
     public Usuario(Usuario usuario) {
@@ -65,14 +53,6 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public void setCadastrado(boolean cadastrado) {
-        this.cadastrado = cadastrado;
-    }
-
     public String getId() {
         return this.id;
     }
@@ -87,74 +67,5 @@ public class Usuario {
 
     public String getSenha() {
         return this.senha;
-    }
-
-    public boolean getStatus() {
-        return this.status;
-    }
-
-    public boolean getCadastrado() {
-        return this.cadastrado;
-    }
-
-    public Usuario create(final Usuario usuario, final DatabaseReference databaseReference) {
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String idUsuario = Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
-                cadastrado = dataSnapshot.hasChild(idUsuario);
-
-                if (cadastrado) {
-                    usuario.setStatus(false);
-                } else {
-                    databaseReference.child(idUsuario).setValue(usuario);
-                    usuario.setStatus(true);
-                }
-
-                usuario.setId(idUsuario);
-                usuario.setCadastrado(cadastrado);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return usuario;
-    }
-
-    public Usuario login(final Usuario usuario, final DatabaseReference databaseReference) {
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String idUsuario = Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
-                cadastrado = dataSnapshot.hasChild(idUsuario);
-                if (!cadastrado) {
-                    usuario.setStatus(false);
-                } else {
-                    if (usuario.getEmail().contains(dataSnapshot.child(idUsuario).child("email").getValue().toString()) && usuario.getSenha().contains(dataSnapshot.child(idUsuario).child("senha").getValue().toString())) {
-                        System.out.println("ENTROU NO IF DO ELSE");
-                        usuario.setStatus(true);
-                        System.out.println("STATUS: " + usuario.getStatus());
-                    }
-                }
-
-                usuario.setId(idUsuario);
-                System.out.println("STATUS: " + usuario.getStatus());
-                usuario.setCadastrado(cadastrado);
-                System.out.println("STATUS: " + usuario.getStatus());
-                System.out.println("CADASTRADO: " + usuario.getCadastrado());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return usuario;
     }
 }

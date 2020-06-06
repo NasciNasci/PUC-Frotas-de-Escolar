@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-    private DatabaseReference motorista = databaseReference.child("Motorista");
-    private DatabaseReference cliente = databaseReference.child("Cliente");
+    private DatabaseReference motoristaDatabase = databaseReference.child("Motorista");
+    private DatabaseReference clienteDatabase = databaseReference.child("Cliente");
 
     private RadioButton buttonMotorista;
     private RadioButton buttonAluno;
@@ -53,31 +53,32 @@ public class MainActivity extends AppCompatActivity {
                 String email = emailUsuario.getText().toString();
                 String senha = senhaUsuario.getText().toString();
 
-                if (buttonMotorista.isChecked() || buttonAluno.isChecked()) {
-
-                    if (verificaEmail(email) && (!senha.equals(""))) {
-
-                        Usuario usuario = new Usuario(email, senha, false);
+                if ((!email.equals("")) && (!senha.equals(""))) {
+                    if (verificaEmail(email)) {
                         if (buttonMotorista.isChecked()) {
-                            login(usuario, motorista, 0);
+                            Motorista motorista = new Motorista(email, senha);
+                            login(motorista, motoristaDatabase);
                         }
                         if (buttonAluno.isChecked()) {
-                            login(usuario, cliente, 1);
-                        }// end if
+                            Cliente cliente = new Cliente(email, senha);
+                            login(cliente, clienteDatabase);
+                        }
+                        if (!buttonMotorista.isChecked() && !buttonAluno.isChecked()) {
+                            Toast.makeText(getApplicationContext(), "Escolha o tipo da conta.", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
-                    }// end if
+                        Toast.makeText(getApplicationContext(), "Email inválido.", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Selecione uma opção.", Toast.LENGTH_SHORT).show();
-                }// end if
+                    Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         cadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,
-                        Cadastrar.class));
+                startActivity(new Intent(MainActivity.this, Cadastrar.class));
             }
         });
 
@@ -88,47 +89,37 @@ public class MainActivity extends AppCompatActivity {
         if (!email.equals("") && email.contains("@") && (email.contains(".com") || email.contains(".br")))
             resposta = true;
         return resposta;
-    }// end verificaEmail()
+    }
 
-    private void login(final Usuario usuario, final DatabaseReference databaseReference, final int tipoDeUsuario) {
-        final String email = usuario.getEmail();
-        final String senha = usuario.getSenha();
+    private void login(final Usuario usuario, final DatabaseReference databaseReference) {
+
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String idUsuario = Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
-                boolean usuarioCadatrado = dataSnapshot.hasChild(idUsuario);
+                usuario.setId(Base64.encodeToString(usuario.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", ""));
+                boolean cadastrado = dataSnapshot.hasChild(usuario.getId());
 
-                if (usuarioCadatrado) {
-                    usuario.setEmail(dataSnapshot.child(idUsuario).child("email").getValue().toString());
-                    usuario.setSenha(dataSnapshot.child(idUsuario).child("senha").getValue().toString());
+                if (cadastrado) {
+                    if (usuario.getEmail().equals(dataSnapshot.child(usuario.getId()).child("email").getValue().toString()) && usuario.getSenha().equals(dataSnapshot.child(usuario.getId()).child("senha").getValue().toString())) {
+                        Toast.makeText(getApplicationContext(), "Login realizado com sucesso.", Toast.LENGTH_SHORT).show();
 
-                    if (email.equals(usuario.getEmail()) && senha.equals(usuario.getSenha())) {
-                        usuario.setStatus(true);
-                        databaseReference.child(idUsuario).setValue(usuario);
-                        if(tipoDeUsuario == 0) {
-                            startActivity(new Intent(getApplicationContext(), PrincipalMotorista.class));
-                            finish();
+                        if (usuario.getClass().equals(Motorista.class)) {
+                            Intent intent = new Intent(getApplicationContext(), PrincipalMotorista.class);
+                            intent.putExtra("email", usuario.getEmail());
+                            startActivity(intent);
+                        } else {
+                            startActivity(new Intent(getApplicationContext(), Listar_motoristas.class));
                         }
-                        else {
-                            startActivity(new Intent(getApplicationContext(), PrincipalCliente.class));
-                            finish();
-                        }
-
-
                     } else {
                         Toast.makeText(getApplicationContext(), "Usuário não encontrado.", Toast.LENGTH_SHORT).show();
-                    }// end if
-                }// end if
-            }// end if
+                    }
+                }
+            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_LONG).show();
             }
         });
-
-    }// end login()
-
-
-}// end class
+    }
+}
