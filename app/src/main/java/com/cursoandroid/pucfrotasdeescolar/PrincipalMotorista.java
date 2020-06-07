@@ -44,6 +44,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -183,6 +184,11 @@ public class PrincipalMotorista extends AppCompatActivity {
                     motorista.setLocaisAtendidos(bairro);
                     motorista.setInstituicoesAtendidas(instituicoes);
                     motorista.setTelefone(telefone);
+                    motorista.setUrlPerfil(urlPerfil);
+                    motorista.setUrlVan1(urlVan1);
+                    motorista.setUrlVan2(urlVan2);
+                    motorista.setUrlVan3(urlVan3);
+                    motorista.setUrlVan4(urlVan4);
                     databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -220,6 +226,12 @@ public class PrincipalMotorista extends AppCompatActivity {
                     motorista.setInstituicoesAtendidas(dataSnapshot.child(idMotorista).child("instituicoesAtendidas").getValue().toString());
                     motorista.setAcessos(Integer.parseInt(dataSnapshot.child(idMotorista).child("acessos").getValue().toString()));
                     motorista.setLocaisAtendidos(dataSnapshot.child(idMotorista).child("locaisAtendidos").getValue().toString());
+                    motorista.setUrlPerfil(dataSnapshot.child(idMotorista).child("urlPerfil").getValue().toString());
+                    motorista.setUrlVan1(dataSnapshot.child(idMotorista).child("urlVan1").getValue().toString());
+                    motorista.setUrlVan2(dataSnapshot.child(idMotorista).child("urlVan2").getValue().toString());
+                    motorista.setUrlVan3(dataSnapshot.child(idMotorista).child("urlVan3").getValue().toString());
+                    motorista.setUrlVan4(dataSnapshot.child(idMotorista).child("urlVan4").getValue().toString());
+
                 } else {
                     motorista = null;
                 }
@@ -231,7 +243,14 @@ public class PrincipalMotorista extends AppCompatActivity {
                     textBairro.setText(motorista.getLocaisAtendidos());
                     textInstituicoes.setText(motorista.getInstituicoesAtendidas());
                     textTelefone.setText(motorista.getTelefone());
-                    numeroCliques.setText(Integer.toString(motorista.getAcessos()));
+                    //numeroCliques.setText(Integer.toString(motorista.getAcessos()));
+                    if(!motorista.getUrlPerfil().equals("")) {
+                        Picasso.get().load(motorista.getUrlPerfil()).into(imagemPerfil);
+                        Picasso.get().load(motorista.getUrlVan1()).into(imagemVan1);
+                        Picasso.get().load(motorista.getUrlVan2()).into(imagemVan2);
+                        Picasso.get().load(motorista.getUrlVan3()).into(imagemVan3);
+                        Picasso.get().load(motorista.getUrlVan4()).into(imagemVan4);
+                    }
                 }
             }
 

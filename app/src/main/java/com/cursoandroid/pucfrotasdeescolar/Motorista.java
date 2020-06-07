@@ -6,6 +6,11 @@ public class Motorista extends Usuario {
     private String instituicoesAtendidas;
     private String locaisAtendidos;
     private String telefone;
+    private String urlPerfil;
+    private String urlVan1;
+    private String urlVan2;
+    private String urlVan3;
+    private String urlVan4;
     private int acessos;
 
     public Motorista() {
@@ -56,6 +61,16 @@ public class Motorista extends Usuario {
         this.acessos = acessos;
     }
 
+    public void setUrlPerfil(String urlPerfil){ this.urlPerfil = urlPerfil; }
+
+    public void setUrlVan1(String urlVan1){ this.urlVan1 = urlVan1; }
+
+    public void setUrlVan2(String urlVan2){ this.urlVan2 = urlVan2; }
+
+    public void setUrlVan3(String urlVan3) { this.urlVan3 = urlVan3; }
+
+    public void setUrlVan4(String urlVan4) { this.urlVan4 = urlVan4; }
+
     public String getInstituicoesAtendidas() {
         return this.instituicoesAtendidas;
     }
@@ -73,6 +88,16 @@ public class Motorista extends Usuario {
     }
 
     public String getDescricao() {
-        return descricao;
+        return this.descricao;
     }
+
+    public String getUrlPerfil(){ return this.urlPerfil; }
+
+    public String getUrlVan1() { return this.urlVan1; }
+
+    public String getUrlVan2() { return this.urlVan2; }
+
+    public String getUrlVan3() { return this.urlVan3; }
+
+    public String getUrlVan4() { return this.urlVan4; }
 }
