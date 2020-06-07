@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,27 +30,38 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 
 public class PrincipalMotorista extends AppCompatActivity {
 
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference motoristaDataBase = databaseReference.child("Motorista");
 
+    private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     private Intent intent;
 
-    private CardView cardView;
     private ImageView imagemPerfil;
 
     private ImageView imagemVan1;
     private ImageView imagemVan2;
     private ImageView imagemVan3;
     private ImageView imagemVan4;
-    //private static final int IMAGE_GALLERY_REQUEST = 1;
+    private static final int IMAGE_GALLERY_REQUEST = 1;
     private Motorista motorista = new Motorista();
 
     private EditText textDescricao;
@@ -86,16 +99,32 @@ public class PrincipalMotorista extends AppCompatActivity {
 
 
         intent = getIntent();
+
         email = intent.getStringExtra("email");
+
+//        motorista.setDescricao(intent.getStringExtra("descricao"));
+//        motorista.setLocaisAtendidos(intent.getStringExtra("locaisAtendidos"));
+//        motorista.setInstituicoesAtendidas(intent.getStringExtra("instituicoesAtendidas"));
+//        motorista.setTelefone(intent.getStringExtra("telefone"));
+//        motorista.setSenha(intent.getStringExtra("senha"));
+//        motorista.setNome(intent.getStringExtra("nome"));
+//        motorista.setId(intent.getStringExtra("id"));
+//        motorista.setAcessos(Integer.parseInt(intent.getStringExtra("acessos")));
+//        motorista.setEmail(intent.getStringExtra("email"));
+
+        motorista = (Motorista) intent.getSerializableExtra("motorista");
+
+        Toast.makeText(PrincipalMotorista.this, motorista.getDescricao(), Toast.LENGTH_SHORT).show();
 
         imprimeTela();
 
-      /*  intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         imagemPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 numeroImagem = 1;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                uploadImage("perfil");
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem de perfil."), 123);
             }
         });
@@ -105,6 +134,7 @@ public class PrincipalMotorista extends AppCompatActivity {
             public void onClick(View v) {
                 numeroImagem = 2;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                uploadImage("van1");
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -114,6 +144,7 @@ public class PrincipalMotorista extends AppCompatActivity {
             public void onClick(View v) {
                 numeroImagem = 3;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                uploadImage("van2");
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -123,6 +154,7 @@ public class PrincipalMotorista extends AppCompatActivity {
             public void onClick(View v) {
                 numeroImagem = 4;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                uploadImage("van3");
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -132,60 +164,73 @@ public class PrincipalMotorista extends AppCompatActivity {
             public void onClick(View v) {
                 numeroImagem = 5;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
+                uploadImage("van4");
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
-        });*/
+        });
 
         buttonSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String descricao = textDescricao.getText().toString();
-                final String bairro = textBairro.getText().toString();
-                final String telefone = textTelefone.getText().toString();
-                final String instituicoes = textInstituicoes.getText().toString();
-
-                if ((!descricao.equals("")) && (!bairro.equals("")) && (!telefone.equals("")) && (telefone.length() <= 9) && (!instituicoes.equals(""))) {
-                    motorista.setDescricao(descricao);
-                    motorista.setLocaisAtendidos(bairro);
-                    motorista.setInstituicoesAtendidas(instituicoes);
-                    motorista.setTelefone(telefone);
-                    create(motorista, motoristaDataBase);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Preencha os campos solicitados.", Toast.LENGTH_SHORT).show();
-                }
-                //uploadFirebase();
+                String descricao = textDescricao.getText().toString();
+                String bairro = textBairro.getText().toString();
+                String telefone = textTelefone.getText().toString();
+                String instituicoes = textInstituicoes.getText().toString();
+//
+//                motorista.setDescricao(descricao);
+//                motorista.setLocaisAtendidos(bairro);
+//                motorista.setInstituicoesAtendidas(instituicoes);
+//                motorista.setTelefone(telefone);
+//                motorista.setSenha(motorista.getSenha());
+//                motorista.setNome(motorista.getNome());
+//                motorista.setId(motorista.getId());
+//                motorista.setAcessos(motorista.getAcessos());
+//                motorista.setEmail(motorista.getSenha());
+                motorista.setDescricao(descricao);
+                motorista.setLocaisAtendidos(bairro);
+                motorista.setTelefone(telefone);
+                motorista.setInstituicoesAtendidas(instituicoes);
+                atualizar(motorista, motoristaDataBase);
             }
         });
 
     }
 
     private void imprimeTela() {
+
         motoristaDataBase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String idMotorista = Base64.encodeToString(email.getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
+                String idMotorista = Base64.encodeToString(motorista.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "");
                 boolean motoristaCadastrado = dataSnapshot.hasChild(idMotorista);
                 if (motoristaCadastrado) {
-                    motorista.setEmail(email);
-                    motorista.setNome(dataSnapshot.child(idMotorista).child("nome").getValue().toString());
-                    motorista.setDescricao(dataSnapshot.child(idMotorista).child("descricao").getValue().toString());
-                    motorista.setTelefone(dataSnapshot.child(idMotorista).child("telefone").getValue().toString());
-                    motorista.setInstituicoesAtendidas(dataSnapshot.child(idMotorista).child("instituicoesAtendidas").getValue().toString());
-                    motorista.setAcessos(Integer.parseInt(dataSnapshot.child(idMotorista).child("acessos").getValue().toString()));
-                    motorista.setLocaisAtendidos(dataSnapshot.child(idMotorista).child("locaisAtendidos").getValue().toString());
-                } else {
-                    motorista = null;
-                }
+//                    motorista.setEmail(email);
+//                    motorista.setNome(dataSnapshot.child(idMotorista).child("nome").getValue().toString());
+//                    motorista.setDescricao(dataSnapshot.child(idMotorista).child("descricao").getValue().toString());
+//                    motorista.setTelefone(dataSnapshot.child(idMotorista).child("telefone").getValue().toString());
+//                    motorista.setInstituicoesAtendidas(dataSnapshot.child(idMotorista).child("instituicoesAtendidas").getValue().toString());
+//                    motorista.setAcessos(Integer.parseInt(dataSnapshot.child(idMotorista).child("acessos").getValue().toString()));
+//                    motorista.setLocaisAtendidos(dataSnapshot.child(idMotorista).child("locaisAtendidos").getValue().toString());
 
-                if (motorista != null) {
-                    nome.setText(motorista.getNome());
-                    textViewEmail.setText(motorista.getEmail());
-                    textDescricao.setText(motorista.getDescricao());
-                    textBairro.setText(motorista.getLocaisAtendidos());
-                    textInstituicoes.setText(motorista.getInstituicoesAtendidas());
-                    textTelefone.setText(motorista.getTelefone());
-                    numeroCliques.setText(Integer.toString(motorista.getAcessos()));
+                    textDescricao.setText(dataSnapshot.child(idMotorista).child("descricao").getValue().toString());
+                    textBairro.setText(dataSnapshot.child(idMotorista).child("locaisAtendidos").getValue().toString());
+                    textInstituicoes.setText(dataSnapshot.child(idMotorista).child("instituicoesAtendidas").getValue().toString());
+                    textTelefone.setText(dataSnapshot.child(idMotorista).child("telefone").getValue().toString());
+                    numeroCliques.setText(dataSnapshot.child(idMotorista).child("acessos").getValue().toString());
                 }
+//                else {
+//                    motorista = null;
+//                }
+
+//                if (motorista != null) {
+//                    nome.setText(motorista.getNome());
+//                    textViewEmail.setText(motorista.getEmail());
+//                    textDescricao.setText(motorista.getDescricao());
+//                    textBairro.setText(motorista.getLocaisAtendidos());
+//                    textInstituicoes.setText(motorista.getInstituicoesAtendidas());
+//                    textTelefone.setText(motorista.getTelefone());
+//                    numeroCliques.setText(Integer.toString(motorista.getAcessos()));
+//                }
             }
 
             @Override
@@ -193,6 +238,132 @@ public class PrincipalMotorista extends AppCompatActivity {
 
             }
         });
+
+        if (motorista != null) {
+            nome.setText(motorista.getNome());
+            textViewEmail.setText(motorista.getEmail());
+//            textDescricao.setText(motorista.getDescricao());
+//            textBairro.setText(motorista.getLocaisAtendidos());
+//            textInstituicoes.setText(motorista.getInstituicoesAtendidas());
+//            textTelefone.setText(motorista.getTelefone());
+//            numeroCliques.setText(Integer.toString(motorista.getAcessos()));
+        }
+    }
+
+    /*
+
+        // Select Image method
+        private void SelectImage()
+        {
+
+            // Defining Implicit Intent to mobile gallery
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(
+                Intent.createChooser(
+                    intent,
+                    "Select Image from here..."),
+                PICK_IMAGE_REQUEST);
+        }
+     */
+
+    // Override onActivityResult method
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // checking request code and result code
+        // if request code is PICK_IMAGE_REQUEST and
+        // resultCode is RESULT_OK
+        // then set image in the image view
+        if (requestCode == IMAGE_GALLERY_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            // Get the Uri of data
+            uri = data.getData();
+            try {
+
+                // Setting image on image view using Bitmap
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                switch (numeroImagem) {
+                    case 1:
+                        imagemPerfil.setImageBitmap(bitmap);
+                        break;
+                    case 2:
+                        imagemVan1.setImageBitmap(bitmap);
+                        break;
+                    case 3:
+                        imagemVan2.setImageBitmap(bitmap);
+                        break;
+                    case 4:
+                        imagemVan3.setImageBitmap(bitmap);
+                        break;
+                    case 5:
+                        imagemVan4.setImageBitmap(bitmap);
+                        break;
+                    default:
+                }
+            }
+
+            catch (IOException e) {
+                // Log the exception
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // UploadImage method
+    private void uploadImage(String identificador) {
+        if (uri != null) {
+
+            // Code for showing progressDialog while uploading
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            // Defining the child of storageReference
+            final String path = "imagens/"+ Base64.encodeToString(email.getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "") + " " + identificador;
+            final StorageReference ref = storageReference.child(path);
+
+            ref.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    ref.delete();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // adding listeners on upload
+                    // or failure of image
+                    ref.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            // Image uploaded successfully
+                            // Dismiss dialog
+                            progressDialog.dismiss();
+                            Toast.makeText(PrincipalMotorista.this, "Image Uploaded!!", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Error, Image not uploaded
+                            progressDialog.dismiss();
+                            Toast.makeText(PrincipalMotorista.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }) .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        // Progress Listener for loading
+                        // percentage on the dialog box
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                        }
+                    });
+                }
+            });
+        }
     }
 
     private void create(final Usuario usuario, final DatabaseReference databaseReference) {
@@ -206,14 +377,6 @@ public class PrincipalMotorista extends AppCompatActivity {
                 if (!cadastrado) {
                     databaseReference.child(usuario.getId()).setValue(usuario);
                     Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
-
-                    if (usuario.getClass().equals(Motorista.class)) {
-                        Intent intent = new Intent(getApplicationContext(), PrincipalMotorista.class);
-                        intent.putExtra("email", usuario.getEmail());
-                        startActivity(intent);
-                    } else {
-                        startActivity(new Intent(getApplicationContext(), Listar_motoristas.class));
-                    }
                 } else {
                     Toast.makeText(getApplicationContext(), "Usuário já cadastrado anteriormente.", Toast.LENGTH_SHORT).show();
                 }
@@ -226,51 +389,19 @@ public class PrincipalMotorista extends AppCompatActivity {
         });
     }
 
-/*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //if(requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null){
-            //uri = data.getData();
+    private void atualizar(final Motorista motorista, final DatabaseReference databaseReference) {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-        //}
-        if(requestCode == IMAGE_GALLERY_REQUEST && resultCode == RESULT_OK && data!= null){
-            uri = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getContentResolver().query(uri,filePathColumn, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            switch(numeroImagem){
-                case 1:
-                    imagemPerfil.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                    break;
-                case 2:
-                    imagemVan1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                    break;
-                case 3:
-                    imagemVan2.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                    break;
-                case 4:
-                    imagemVan3.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                    break;
-                case 5:
-                    imagemVan4.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                    break;
-                default:
+                databaseReference.child(motorista.getId()).removeValue();
+                databaseReference.child(motorista.getId()).setValue(motorista);
+                Toast.makeText(getApplicationContext(), "Dados atualizados com sucesso", Toast.LENGTH_SHORT).show();
+
             }
-
-        }
-    }*/
-/*
-    private String getExtension(Uri uri){
-        ContentResolver cr = getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
-    private void uploadFirebase(){
-        uri = Uri.fromFile(new File("images/" + motorista.getId()));
-        StorageReference idRef = storageReference.child("")
-    }*/
 }
