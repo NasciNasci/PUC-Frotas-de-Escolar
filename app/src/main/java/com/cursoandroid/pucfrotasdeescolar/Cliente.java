@@ -17,10 +17,4 @@ public class Cliente extends Usuario {
         this.setSenha(senha);
     }
 
-    public Cliente(String id, String nome, String email, String senha) {
-        this.setId(id);
-        this.setNome(nome);
-        this.setEmail(email);
-        this.setSenha(senha);
-    }
 }
