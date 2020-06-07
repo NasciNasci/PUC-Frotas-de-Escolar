@@ -1,32 +1,18 @@
 package com.cursoandroid.pucfrotasdeescolar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.storage.StorageManager;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
-import android.webkit.MimeTypeMap;
-import android.webkit.WebChromeClient;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,10 +32,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
 
 public class PrincipalMotorista extends AppCompatActivity {
 
@@ -67,7 +50,7 @@ public class PrincipalMotorista extends AppCompatActivity {
     private ImageView imagemVan4;
     private static final int IMAGE_GALLERY_REQUEST = 1;
 
-    private Motorista motorista = new Motorista();
+    private Motorista motorista = (Motorista) intent.getSerializableExtra("motorista");
 
     private EditText textDescricao;
     private EditText textBairro;
@@ -79,11 +62,11 @@ public class PrincipalMotorista extends AppCompatActivity {
     private Button buttonSalvar;
     private String email;
 
-    private String urlPerfil;
-    private String urlVan1;
-    private String urlVan2;
-    private String urlVan3;
-    private String urlVan4;
+    private String urlPerfil = motorista.getUrlPerfil();
+    private String urlVan1 = motorista.getUrlVan1();
+    private String urlVan2 = motorista.getUrlVan2();
+    private String urlVan3 = motorista.getUrlVan3();
+    private String urlVan4 = motorista.getUrlVan4();
 
     public Uri uri;
     public int numeroImagem;
@@ -116,7 +99,6 @@ public class PrincipalMotorista extends AppCompatActivity {
         urlVan4 = "";
 
         intent = getIntent();
-        motorista = (Motorista) intent.getSerializableExtra("motorista");
 
         imprimeTela();
 
