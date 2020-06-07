@@ -14,12 +14,9 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(Home.this, MainActivity.class));
-                finish();
-            }
+        handler.postDelayed(() -> {
+            startActivity(new Intent(Home.this, MainActivity.class));
+            finish();
         }, 1000);
     }
 }
