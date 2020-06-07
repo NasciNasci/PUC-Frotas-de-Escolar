@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -89,10 +90,14 @@ public class PrincipalMotorista extends AppCompatActivity {
         imagemVan3 = findViewById(R.id.imageView3);
         imagemVan4 = findViewById(R.id.imageView4);
 
+        urlPerfil = "";
+        urlVan1 = "";
+        urlVan2 = "";
+        urlVan3 = "";
+        urlVan4 = "";
+
         intent = getIntent();
         motorista = (Motorista) intent.getSerializableExtra("motorista");
-
-        Toast.makeText(PrincipalMotorista.this, motorista.getDescricao(), Toast.LENGTH_SHORT).show();
 
         imprimeTela();
 
@@ -178,6 +183,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                 motorista.setUrlVan2(urlVan2);
                 motorista.setUrlVan3(urlVan3);
                 motorista.setUrlVan4(urlVan4);
+
                 atualizar(motorista, motoristaDataBase);
             }
         });
@@ -205,11 +211,11 @@ public class PrincipalMotorista extends AppCompatActivity {
                     textInstituicoes.setText(dataSnapshot.child(idMotorista).child("instituicoesAtendidas").getValue().toString());
                     textTelefone.setText(dataSnapshot.child(idMotorista).child("telefone").getValue().toString());
                     numeroCliques.setText(dataSnapshot.child(idMotorista).child("acessos").getValue().toString());
-                    motorista.setUrlPerfil(dataSnapshot.child(idMotorista).child("urlPerfil").getValue().toString());
-                    motorista.setUrlVan1(dataSnapshot.child(idMotorista).child("urlVan1").getValue().toString());
-                    motorista.setUrlVan2(dataSnapshot.child(idMotorista).child("urlVan2").getValue().toString());
-                    motorista.setUrlVan3(dataSnapshot.child(idMotorista).child("urlVan3").getValue().toString());
-                    motorista.setUrlVan4(dataSnapshot.child(idMotorista).child("urlVan4").getValue().toString());
+//                    motorista.setUrlPerfil(dataSnapshot.child(idMotorista).child("urlPerfil").getValue().toString());
+//                    motorista.setUrlVan1(dataSnapshot.child(idMotorista).child("urlVan1").getValue().toString());
+//                    motorista.setUrlVan2(dataSnapshot.child(idMotorista).child("urlVan2").getValue().toString());
+//                    motorista.setUrlVan3(dataSnapshot.child(idMotorista).child("urlVan3").getValue().toString());
+//                    motorista.setUrlVan4(dataSnapshot.child(idMotorista).child("urlVan4").getValue().toString());
                     if(!motorista.getUrlPerfil().equals("")) {
                         Picasso.get().load(motorista.getUrlPerfil()).into(imagemPerfil);
                     }
@@ -332,6 +338,7 @@ public class PrincipalMotorista extends AppCompatActivity {
             final StorageReference ref = storageReference.child(path);
 
             final UploadTask uploadTask = ref.putFile(uri);
+
             uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
