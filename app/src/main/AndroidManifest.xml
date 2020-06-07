@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cursoandroid.pucfrotasdeescolar">
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/van_logo_round"
@@ -9,12 +11,13 @@
         android:roundIcon="@mipmap/van_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PrincipalCliente"></activity>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".PrincipalCliente" />
         <activity android:name=".Listar_motoristas" />
         <activity android:name=".Cadastrar" />
         <activity android:name=".PrincipalMotorista" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Home"
             android:screenOrientation="sensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
