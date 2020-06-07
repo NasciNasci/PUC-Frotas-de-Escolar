@@ -121,6 +121,17 @@ public class MainActivity extends AppCompatActivity {
 //                            intent.putExtra("descricao", motorista.getDescricao());
 //                            intent.putExtra("acessos", motorista.getAcessos());
 
+                            motorista.setDescricao(dataSnapshot.child(usuario.getId()).child("descricao").getValue().toString());
+                            motorista.setTelefone(dataSnapshot.child(usuario.getId()).child("telefone").getValue().toString());
+                            motorista.setInstituicoesAtendidas(dataSnapshot.child(usuario.getId()).child("instituicoesAtendidas").getValue().toString());
+                            motorista.setAcessos(Integer.parseInt(dataSnapshot.child(usuario.getId()).child("acessos").getValue().toString()));
+                            motorista.setLocaisAtendidos(dataSnapshot.child(usuario.getId()).child("locaisAtendidos").getValue().toString());
+                            motorista.setUrlPerfil(dataSnapshot.child(usuario.getId()).child("urlPerfil").getValue().toString());
+                            motorista.setUrlVan1(dataSnapshot.child(usuario.getId()).child("urlVan1").getValue().toString());
+                            motorista.setUrlVan2(dataSnapshot.child(usuario.getId()).child("urlVan2").getValue().toString());
+                            motorista.setUrlVan3(dataSnapshot.child(usuario.getId()).child("urlVan3").getValue().toString());
+                            motorista.setUrlVan4(dataSnapshot.child(usuario.getId()).child("urlVan4").getValue().toString());
+
                             intent.putExtra("motorista", motorista);
                             startActivity(intent);
                         } else {

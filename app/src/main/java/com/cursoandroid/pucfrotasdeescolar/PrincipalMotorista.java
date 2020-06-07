@@ -109,6 +109,12 @@ public class PrincipalMotorista extends AppCompatActivity {
         imagemVan3 = (ImageView) findViewById(R.id.imageView3);
         imagemVan4 = (ImageView) findViewById(R.id.imageView4);
 
+        urlPerfil = "";
+        urlVan1 = "";
+        urlVan2 = "";
+        urlVan3 = "";
+        urlVan4 = "";
+
 
         intent = getIntent();
         email = intent.getStringExtra("email");
@@ -238,11 +244,11 @@ public class PrincipalMotorista extends AppCompatActivity {
                     textInstituicoes.setText(dataSnapshot.child(idMotorista).child("instituicoesAtendidas").getValue().toString());
                     textTelefone.setText(dataSnapshot.child(idMotorista).child("telefone").getValue().toString());
                     numeroCliques.setText(dataSnapshot.child(idMotorista).child("acessos").getValue().toString());
-                    motorista.setUrlPerfil(dataSnapshot.child(idMotorista).child("urlPerfil").getValue().toString());
-                    motorista.setUrlVan1(dataSnapshot.child(idMotorista).child("urlVan1").getValue().toString());
-                    motorista.setUrlVan2(dataSnapshot.child(idMotorista).child("urlVan2").getValue().toString());
-                    motorista.setUrlVan3(dataSnapshot.child(idMotorista).child("urlVan3").getValue().toString());
-                    motorista.setUrlVan4(dataSnapshot.child(idMotorista).child("urlVan4").getValue().toString());
+//                    motorista.setUrlPerfil(dataSnapshot.child(idMotorista).child("urlPerfil").getValue().toString());
+//                    motorista.setUrlVan1(dataSnapshot.child(idMotorista).child("urlVan1").getValue().toString());
+//                    motorista.setUrlVan2(dataSnapshot.child(idMotorista).child("urlVan2").getValue().toString());
+//                    motorista.setUrlVan3(dataSnapshot.child(idMotorista).child("urlVan3").getValue().toString());
+//                    motorista.setUrlVan4(dataSnapshot.child(idMotorista).child("urlVan4").getValue().toString());
                     if(!motorista.getUrlPerfil().equals("")) {
                         Picasso.get().load(motorista.getUrlPerfil()).into(imagemPerfil);
                     }
