@@ -2,8 +2,6 @@ package com.cursoandroid.pucfrotasdeescolar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton buttonAluno;
     private EditText emailUsuario;
     private EditText senhaUsuario;
-    private Button entrar;
-    private TextView cadastrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         senhaUsuario = findViewById(R.id.edit_senha);
         buttonMotorista = findViewById(R.id.radio_button_motorista);
         buttonAluno = findViewById(R.id.radio_button_aluno);
-        entrar = findViewById(R.id.botao_entrar);
-        cadastrar = findViewById(R.id.botao_criar_conta);
+        Button entrar = findViewById(R.id.botao_entrar);
+        TextView cadastrar = findViewById(R.id.botao_criar_conta);
 
         entrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
                     if (verificaEmail(email)) {
                         if (buttonMotorista.isChecked()) {
                             Motorista motorista = new Motorista(email, senha);
-
                             login(motorista, motoristaDatabase);
                         }
                         if (buttonAluno.isChecked()) {
@@ -106,20 +101,21 @@ public class MainActivity extends AppCompatActivity {
 
                         if (usuario.getClass().equals(Motorista.class)) {
                             Intent intent = new Intent(getApplicationContext(), PrincipalMotorista.class);
-                            usuario.setNome(dataSnapshot.child(usuario.getId()).child("nome").getValue().toString());
-                            usuario.setEmail(dataSnapshot.child(usuario.getId()).child("email").getValue().toString());
-                            usuario.setSenha(dataSnapshot.child(usuario.getId()).child("senha").getValue().toString());
-                            Motorista motorista = (Motorista) usuario;
 
-//                            intent.putExtra("email", usuario.getEmail());
-//                            intent.putExtra("id", usuario.getId());
-//                            intent.putExtra("nome", usuario.getNome());
-//                            intent.putExtra("senha", usuario.getSenha());
-//                            intent.putExtra("instituicoesAtendidas", motorista.getInstituicoesAtendidas());
-//                            intent.putExtra("locaisAtendidos", motorista.getLocaisAtendidos());
-//                            intent.putExtra("telefone", motorista.getTelefone());
-//                            intent.putExtra("descricao", motorista.getDescricao());
-//                            intent.putExtra("acessos", motorista.getAcessos());
+                            Motorista motorista = (Motorista) usuario;
+                            motorista.setNome(dataSnapshot.child(motorista.getId()).child("nome").getValue().toString());
+                            motorista.setEmail(dataSnapshot.child(motorista.getId()).child("email").getValue().toString());
+                            motorista.setSenha(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setAcessos(Integer.parseInt(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString()));
+                            motorista.setInstituicoesAtendidas(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setLocaisAtendidos(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setTelefone(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setDescricao(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setUrlPerfil(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setUrlVan1(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setUrlVan2(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setUrlVan3(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setUrlVan4(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
 
                             motorista.setDescricao(dataSnapshot.child(usuario.getId()).child("descricao").getValue().toString());
                             motorista.setTelefone(dataSnapshot.child(usuario.getId()).child("telefone").getValue().toString());
@@ -149,5 +145,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 }
