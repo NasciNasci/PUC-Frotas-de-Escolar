@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/van_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".TelaMotoristaEscolhido"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".PrincipalCliente" />
         <activity android:name=".Listar_motoristas" />
         <activity android:name=".Cadastrar" />
