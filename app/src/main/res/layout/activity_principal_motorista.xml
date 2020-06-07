@@ -20,22 +20,17 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.05" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:cardCornerRadius="60dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline23"
-            app:layout_constraintStart_toStartOf="@+id/guideline14"
-            app:layout_constraintTop_toTopOf="@+id/guideline31">
 
-            <ImageView
-                android:id="@+id/img_motorista"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                tools:src="@drawable/motorista1" />
-        </androidx.cardview.widget.CardView>
+        <ImageView
+            android:id="@+id/img_motorista"
+            android:layout_width="60dp"
+            android:layout_height="67dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="28dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/motorista1" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline32"
