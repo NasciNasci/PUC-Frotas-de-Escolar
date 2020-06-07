@@ -5,11 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Base64;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,7 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.String;
+
 
 public class Listar_motoristas extends AppCompatActivity implements OnClickListener<Motorista> {
 
@@ -69,16 +65,7 @@ public class Listar_motoristas extends AppCompatActivity implements OnClickListe
     @Override
     public void onClick(Motorista motorista) {
         Intent intent = new Intent(Listar_motoristas.this, TelaMotoristaEscolhido.class);
-//        intent.putExtra("email", motorista.getEmail());
-//        intent.putExtra("id", motorista.getId());
-//        intent.putExtra("nome", motorista.getNome());
-//        intent.putExtra("senha", motorista.getSenha());
-//        intent.putExtra("instituicoesAtendidas", motorista.getInstituicoesAtendidas());
-//        intent.putExtra("locaisAtendidos", motorista.getLocaisAtendidos());
-//        intent.putExtra("telefone", motorista.getTelefone());
-//        intent.putExtra("descricao", motorista.getDescricao());
-//        intent.putExtra("acessos", motorista.getAcessos());
-
+        motorista.setAcessos(motorista.getAcessos() + 1);
         intent.putExtra("motorista", motorista);
         startActivity(intent);
     }

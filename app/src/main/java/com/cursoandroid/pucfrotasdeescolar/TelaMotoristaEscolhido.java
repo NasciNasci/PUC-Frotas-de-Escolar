@@ -84,7 +84,7 @@ public class TelaMotoristaEscolhido extends AppCompatActivity {
 
         imprimeTela();
 
-        intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+//        intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 
     }
 
@@ -101,7 +101,7 @@ public class TelaMotoristaEscolhido extends AppCompatActivity {
                     textBairro.setText(dataSnapshot.child(idMotorista).child("locaisAtendidos").getValue().toString());
                     textInstituicoes.setText(dataSnapshot.child(idMotorista).child("instituicoesAtendidas").getValue().toString());
                     textTelefone.setText(dataSnapshot.child(idMotorista).child("telefone").getValue().toString());
-                    numeroCliques.setText(dataSnapshot.child(idMotorista).child("acessos").getValue().toString());
+                    numeroCliques.setText(motorista.getAcessos() + "");
 
                     if(!motorista.getUrlPerfil().equals("")) {
                         Picasso.get().load(motorista.getUrlPerfil()).into(imagemPerfil);
@@ -118,6 +118,9 @@ public class TelaMotoristaEscolhido extends AppCompatActivity {
                     if (!motorista.getUrlVan4().equals("")) {
                         Picasso.get().load(motorista.getUrlVan4()).into(imagemVan4);
                     }
+
+                    motoristaDataBase.child(motorista.getId()).removeValue();
+                    motoristaDataBase.child(motorista.getId()).setValue(motorista);
                 }
             }
 
