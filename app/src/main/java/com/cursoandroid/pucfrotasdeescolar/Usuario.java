@@ -1,6 +1,8 @@
 package com.cursoandroid.pucfrotasdeescolar;
 
-public class Usuario {
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
     private String id;
     private String nome;
     private String email;

@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton buttonAluno;
     private EditText emailUsuario;
     private EditText senhaUsuario;
-    private Button entrar;
-    private TextView cadastrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         senhaUsuario = findViewById(R.id.edit_senha);
         buttonMotorista = findViewById(R.id.radio_button_motorista);
         buttonAluno = findViewById(R.id.radio_button_aluno);
-        entrar = findViewById(R.id.botao_entrar);
-        cadastrar = findViewById(R.id.botao_criar_conta);
+        Button entrar = findViewById(R.id.botao_entrar);
+        TextView cadastrar = findViewById(R.id.botao_criar_conta);
 
         entrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,11 +52,11 @@ public class MainActivity extends AppCompatActivity {
                 if ((!email.equals("")) && (!senha.equals(""))) {
                     if (verificaEmail(email)) {
                         if (buttonMotorista.isChecked()) {
-                            Usuario motorista = new Motorista(email, senha);
+                            Motorista motorista = new Motorista(email, senha);
                             login(motorista, motoristaDatabase);
                         }
                         if (buttonAluno.isChecked()) {
-                            Usuario cliente = new Cliente(email, senha);
+                            Cliente cliente = new Cliente(email, senha);
                             login(cliente, clienteDatabase);
                         }
                         if (!buttonMotorista.isChecked() && !buttonAluno.isChecked()) {
@@ -103,7 +101,23 @@ public class MainActivity extends AppCompatActivity {
 
                         if (usuario.getClass().equals(Motorista.class)) {
                             Intent intent = new Intent(getApplicationContext(), PrincipalMotorista.class);
-                            intent.putExtra("email", usuario.getEmail());
+
+                            Motorista motorista = (Motorista) usuario;
+                            motorista.setNome(dataSnapshot.child(motorista.getId()).child("nome").getValue().toString());
+                            motorista.setEmail(dataSnapshot.child(motorista.getId()).child("email").getValue().toString());
+                            motorista.setSenha(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setAcessos(Integer.parseInt(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString()));
+                            motorista.setInstituicoesAtendidas(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setLocaisAtendidos(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setTelefone(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setDescricao(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setUrlPerfil(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setUrlVan1(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setUrlVan2(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setUrlVan3(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+                            motorista.setUrlVan4(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
+
+                            intent.putExtra("motorista", motorista);
                             startActivity(intent);
                         } else {
                             startActivity(new Intent(getApplicationContext(), Listar_motoristas.class));

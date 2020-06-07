@@ -43,11 +43,13 @@ public class Listar_motoristas extends AppCompatActivity implements OnClickListe
                     Motorista motorista = new Motorista();
                     motorista.setNome(postSnapshot.child("nome").getValue().toString());
                     motorista.setEmail(postSnapshot.child("email").getValue().toString());
-                    //motorista.setSenha(postSnapshot.child("senha").getValue().toString());
+                    motorista.setSenha(postSnapshot.child("senha").getValue().toString());
                     motorista.setInstituicoesAtendidas(postSnapshot.child("instituicoesAtendidas").getValue().toString());
-                    //motorista.setLocaisAtendidos(postSnapshot.child("locaisAtendidos").getValue().toString());
-                    //motorista.setTelefone(postSnapshot.child("telefone").getValue().toString());
-                    //motorista.setAcessos(Integer.parseInt(postSnapshot.child("acessos").getValue().toString()));
+                    motorista.setLocaisAtendidos(postSnapshot.child("locaisAtendidos").getValue().toString());
+                    motorista.setTelefone(postSnapshot.child("telefone").getValue().toString());
+                    motorista.setId(postSnapshot.child("id").getValue().toString());
+                    motorista.setDescricao(postSnapshot.child("descricao").getValue().toString());
+                    motorista.setAcessos(Integer.parseInt(postSnapshot.child("acessos").getValue().toString()));
                     motoristas.add(motorista);
                 }
                 adapter.setList(motoristas);
@@ -61,7 +63,17 @@ public class Listar_motoristas extends AppCompatActivity implements OnClickListe
 
     @Override
     public void onClick(Motorista motorista) {
-        startActivity(new Intent(Listar_motoristas.this, MainActivity.class));
+        Intent intent = new Intent(Listar_motoristas.this, PrincipalMotorista.class);
+        intent.putExtra("email", motorista.getEmail());
+        intent.putExtra("id", motorista.getId());
+        intent.putExtra("nome", motorista.getNome());
+        intent.putExtra("senha", motorista.getSenha());
+        intent.putExtra("instituicoesAtendidas", motorista.getInstituicoesAtendidas());
+        intent.putExtra("locaisAtendidos", motorista.getLocaisAtendidos());
+        intent.putExtra("telefone", motorista.getTelefone());
+        intent.putExtra("descricao", motorista.getDescricao());
+        intent.putExtra("acessos", motorista.getAcessos());
+        startActivity(intent);
     }
 }
 
