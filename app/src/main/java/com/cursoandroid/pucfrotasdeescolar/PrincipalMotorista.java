@@ -245,9 +245,17 @@ public class PrincipalMotorista extends AppCompatActivity {
                     motorista.setUrlVan4(dataSnapshot.child(idMotorista).child("urlVan4").getValue().toString());
                     if(!motorista.getUrlPerfil().equals("")) {
                         Picasso.get().load(motorista.getUrlPerfil()).into(imagemPerfil);
+                    }
+                    if(!motorista.getUrlVan1().equals("")) {
                         Picasso.get().load(motorista.getUrlVan1()).into(imagemVan1);
+                    }
+                    if(!motorista.getUrlVan2().equals("")) {
                         Picasso.get().load(motorista.getUrlVan2()).into(imagemVan2);
+                    }
+                    if(!motorista.getUrlVan3().equals("")) {
                         Picasso.get().load(motorista.getUrlVan3()).into(imagemVan3);
+                    }
+                    if(!motorista.getUrlVan4().equals("")) {
                         Picasso.get().load(motorista.getUrlVan4()).into(imagemVan4);
                     }
                 }
