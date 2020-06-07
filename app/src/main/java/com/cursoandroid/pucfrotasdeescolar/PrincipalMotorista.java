@@ -50,7 +50,7 @@ public class PrincipalMotorista extends AppCompatActivity {
     private ImageView imagemVan4;
     private static final int IMAGE_GALLERY_REQUEST = 1;
 
-    private Motorista motorista = (Motorista) intent.getSerializableExtra("motorista");
+    private Motorista motorista = new Motorista();
 
     private EditText textDescricao;
     private EditText textBairro;
@@ -92,13 +92,14 @@ public class PrincipalMotorista extends AppCompatActivity {
         imagemVan3 = findViewById(R.id.imageView3);
         imagemVan4 = findViewById(R.id.imageView4);
 
-        urlPerfil = "";
-        urlVan1 = "";
-        urlVan2 = "";
-        urlVan3 = "";
-        urlVan4 = "";
-
         intent = getIntent();
+        motorista = (Motorista) intent.getSerializableExtra("motorista");
+
+        urlPerfil = motorista.getUrlPerfil();
+        urlVan1 = motorista.getUrlVan1();
+        urlVan2 = motorista.getUrlVan2();
+        urlVan3 = motorista.getUrlVan3();
+        urlVan4 = motorista.getUrlVan4();
 
         imprimeTela();
 
