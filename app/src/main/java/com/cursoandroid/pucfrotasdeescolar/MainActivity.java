@@ -106,27 +106,16 @@ public class MainActivity extends AppCompatActivity {
                             motorista.setNome(dataSnapshot.child(motorista.getId()).child("nome").getValue().toString());
                             motorista.setEmail(dataSnapshot.child(motorista.getId()).child("email").getValue().toString());
                             motorista.setSenha(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
-                            motorista.setAcessos(Integer.parseInt(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString()));
-                            motorista.setInstituicoesAtendidas(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
-                            motorista.setLocaisAtendidos(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
-                            motorista.setTelefone(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
-                            motorista.setDescricao(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
-                            motorista.setUrlPerfil(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
-                            motorista.setUrlVan1(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
-                            motorista.setUrlVan2(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
-                            motorista.setUrlVan3(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
-                            motorista.setUrlVan4(dataSnapshot.child(motorista.getId()).child("senha").getValue().toString());
-
-                            motorista.setDescricao(dataSnapshot.child(usuario.getId()).child("descricao").getValue().toString());
-                            motorista.setTelefone(dataSnapshot.child(usuario.getId()).child("telefone").getValue().toString());
-                            motorista.setInstituicoesAtendidas(dataSnapshot.child(usuario.getId()).child("instituicoesAtendidas").getValue().toString());
-                            motorista.setAcessos(Integer.parseInt(dataSnapshot.child(usuario.getId()).child("acessos").getValue().toString()));
-                            motorista.setLocaisAtendidos(dataSnapshot.child(usuario.getId()).child("locaisAtendidos").getValue().toString());
-                            motorista.setUrlPerfil(dataSnapshot.child(usuario.getId()).child("urlPerfil").getValue().toString());
-                            motorista.setUrlVan1(dataSnapshot.child(usuario.getId()).child("urlVan1").getValue().toString());
-                            motorista.setUrlVan2(dataSnapshot.child(usuario.getId()).child("urlVan2").getValue().toString());
-                            motorista.setUrlVan3(dataSnapshot.child(usuario.getId()).child("urlVan3").getValue().toString());
-                            motorista.setUrlVan4(dataSnapshot.child(usuario.getId()).child("urlVan4").getValue().toString());
+                            motorista.setAcessos(Integer.parseInt(dataSnapshot.child(motorista.getId()).child("acessos").getValue().toString()));
+                            motorista.setInstituicoesAtendidas(dataSnapshot.child(motorista.getId()).child("instituicoesAtendidas").getValue().toString());
+                            motorista.setLocaisAtendidos(dataSnapshot.child(motorista.getId()).child("locaisAtendidos").getValue().toString());
+                            motorista.setTelefone(dataSnapshot.child(motorista.getId()).child("telefone").getValue().toString());
+                            motorista.setDescricao(dataSnapshot.child(motorista.getId()).child("descricao").getValue().toString());
+                            motorista.setUrlPerfil(dataSnapshot.child(motorista.getId()).child("urlPerfil").getValue().toString());
+                            motorista.setUrlVan1(dataSnapshot.child(motorista.getId()).child("urlVan1").getValue().toString());
+                            motorista.setUrlVan2(dataSnapshot.child(motorista.getId()).child("urlVan2").getValue().toString());
+                            motorista.setUrlVan3(dataSnapshot.child(motorista.getId()).child("urlVan3").getValue().toString());
+                            motorista.setUrlVan4(dataSnapshot.child(motorista.getId()).child("urlVan4").getValue().toString());
 
                             intent.putExtra("motorista", motorista);
                             startActivity(intent);

@@ -1,35 +1,20 @@
 package com.cursoandroid.pucfrotasdeescolar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.storage.StorageManager;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
-import android.webkit.MimeTypeMap;
-import android.webkit.WebChromeClient;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,11 +30,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
 
 public class PrincipalMotorista extends AppCompatActivity {
 
@@ -94,20 +75,20 @@ public class PrincipalMotorista extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal_motorista);
 
-        textDescricao = (EditText) findViewById(R.id.editText_descricao);
-        textBairro = (EditText) findViewById(R.id.editText_bairros);
-        textTelefone = (EditText) findViewById(R.id.editText_telefone);
-        textInstituicoes = (EditText) findViewById(R.id.editText_instuicoes);
-        numeroCliques = (TextView) findViewById(R.id.txt_quantidade_acessos);
-        nome = (TextView) findViewById(R.id.txt_nome);
-        textViewEmail = (TextView) findViewById(R.id.txt_email);
-        buttonSalvar = (Button) findViewById(R.id.botao_salvar);
+        textDescricao = findViewById(R.id.editText_descricao);
+        textBairro = findViewById(R.id.editText_bairros);
+        textTelefone = findViewById(R.id.editText_telefone);
+        textInstituicoes = findViewById(R.id.editText_instuicoes);
+        numeroCliques = findViewById(R.id.txt_quantidade_acessos);
+        nome = findViewById(R.id.txt_nome);
+        textViewEmail = findViewById(R.id.txt_email);
+        buttonSalvar = findViewById(R.id.botao_salvar);
 
-        imagemPerfil = (ImageView) findViewById(R.id.img_motorista);
-        imagemVan1 = (ImageView) findViewById(R.id.imageView);
-        imagemVan2 = (ImageView) findViewById(R.id.imageView2);
-        imagemVan3 = (ImageView) findViewById(R.id.imageView3);
-        imagemVan4 = (ImageView) findViewById(R.id.imageView4);
+        imagemPerfil = findViewById(R.id.img_motorista);
+        imagemVan1 = findViewById(R.id.imageView);
+        imagemVan2 = findViewById(R.id.imageView2);
+        imagemVan3 = findViewById(R.id.imageView3);
+        imagemVan4 = findViewById(R.id.imageView4);
 
         urlPerfil = "";
         urlVan1 = "";
@@ -115,23 +96,8 @@ public class PrincipalMotorista extends AppCompatActivity {
         urlVan3 = "";
         urlVan4 = "";
 
-
         intent = getIntent();
-        email = intent.getStringExtra("email");
-
-//        motorista.setDescricao(intent.getStringExtra("descricao"));
-//        motorista.setLocaisAtendidos(intent.getStringExtra("locaisAtendidos"));
-//        motorista.setInstituicoesAtendidas(intent.getStringExtra("instituicoesAtendidas"));
-//        motorista.setTelefone(intent.getStringExtra("telefone"));
-//        motorista.setSenha(intent.getStringExtra("senha"));
-//        motorista.setNome(intent.getStringExtra("nome"));
-//        motorista.setId(intent.getStringExtra("id"));
-//        motorista.setAcessos(Integer.parseInt(intent.getStringExtra("acessos")));
-//        motorista.setEmail(intent.getStringExtra("email"));
-
         motorista = (Motorista) intent.getSerializableExtra("motorista");
-
-        Toast.makeText(PrincipalMotorista.this, motorista.getDescricao(), Toast.LENGTH_SHORT).show();
 
         imprimeTela();
 
@@ -217,6 +183,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                 motorista.setUrlVan2(urlVan2);
                 motorista.setUrlVan3(urlVan3);
                 motorista.setUrlVan4(urlVan4);
+
                 atualizar(motorista, motoristaDataBase);
             }
         });
@@ -371,6 +338,7 @@ public class PrincipalMotorista extends AppCompatActivity {
             final StorageReference ref = storageReference.child(path);
 
             final UploadTask uploadTask = ref.putFile(uri);
+
             uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
