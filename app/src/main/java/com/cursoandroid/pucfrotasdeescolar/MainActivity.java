@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                     if (verificaEmail(email)) {
                         if (buttonMotorista.isChecked()) {
                             Motorista motorista = new Motorista(email, senha);
+
                             login(motorista, motoristaDatabase);
                         }
                         if (buttonAluno.isChecked()) {
@@ -105,7 +106,22 @@ public class MainActivity extends AppCompatActivity {
 
                         if (usuario.getClass().equals(Motorista.class)) {
                             Intent intent = new Intent(getApplicationContext(), PrincipalMotorista.class);
-                            intent.putExtra("email", usuario.getEmail());
+                            usuario.setNome(dataSnapshot.child(usuario.getId()).child("nome").getValue().toString());
+                            usuario.setEmail(dataSnapshot.child(usuario.getId()).child("email").getValue().toString());
+                            usuario.setSenha(dataSnapshot.child(usuario.getId()).child("senha").getValue().toString());
+                            Motorista motorista = (Motorista) usuario;
+
+//                            intent.putExtra("email", usuario.getEmail());
+//                            intent.putExtra("id", usuario.getId());
+//                            intent.putExtra("nome", usuario.getNome());
+//                            intent.putExtra("senha", usuario.getSenha());
+//                            intent.putExtra("instituicoesAtendidas", motorista.getInstituicoesAtendidas());
+//                            intent.putExtra("locaisAtendidos", motorista.getLocaisAtendidos());
+//                            intent.putExtra("telefone", motorista.getTelefone());
+//                            intent.putExtra("descricao", motorista.getDescricao());
+//                            intent.putExtra("acessos", motorista.getAcessos());
+
+                            intent.putExtra("motorista", motorista);
                             startActivity(intent);
                         } else {
                             startActivity(new Intent(getApplicationContext(), Listar_motoristas.class));
@@ -122,4 +138,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

@@ -1,6 +1,8 @@
 package com.cursoandroid.pucfrotasdeescolar;
 
-public class Motorista extends Usuario {
+import java.io.Serializable;
+
+public class Motorista extends Usuario implements Serializable {
 
     private String descricao;
     private String instituicoesAtendidas;

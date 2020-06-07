@@ -110,8 +110,10 @@ public class Cadastrar extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Usuário criado com sucesso.", Toast.LENGTH_SHORT).show();
 
                     if (usuario.getClass().equals(Motorista.class)) {
+
+                        Motorista motorista = (Motorista) usuario;
                         Intent intent = new Intent(getApplicationContext(), PrincipalMotorista.class);
-                        intent.putExtra("email", usuario.getEmail());
+                        intent.putExtra("motorista", motorista);
                         startActivity(intent);
                     } else {
                         startActivity(new Intent(getApplicationContext(), Listar_motoristas.class));
