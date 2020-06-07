@@ -30,8 +30,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +44,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,6 +66,7 @@ public class PrincipalMotorista extends AppCompatActivity {
     private ImageView imagemVan3;
     private ImageView imagemVan4;
     private static final int IMAGE_GALLERY_REQUEST = 1;
+
     private Motorista motorista = new Motorista();
 
     private EditText textDescricao;
@@ -74,8 +79,15 @@ public class PrincipalMotorista extends AppCompatActivity {
     private Button buttonSalvar;
     private String email;
 
+    private String urlPerfil;
+    private String urlVan1;
+    private String urlVan2;
+    private String urlVan3;
+    private String urlVan4;
+
     public Uri uri;
     public int numeroImagem;
+    public String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +111,6 @@ public class PrincipalMotorista extends AppCompatActivity {
 
 
         intent = getIntent();
-
         email = intent.getStringExtra("email");
 
 //        motorista.setDescricao(intent.getStringExtra("descricao"));
@@ -125,6 +136,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                 numeroImagem = 1;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
                 uploadImage("perfil");
+                urlPerfil = url;
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem de perfil."), 123);
             }
         });
@@ -135,6 +147,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                 numeroImagem = 2;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
                 uploadImage("van1");
+                urlVan1 = url;
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -145,6 +158,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                 numeroImagem = 3;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
                 uploadImage("van2");
+                urlVan2 = url;
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -155,6 +169,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                 numeroImagem = 4;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
                 uploadImage("van3");
+                urlVan3 = url;
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -165,6 +180,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                 numeroImagem = 5;
                 startActivityForResult(intent, IMAGE_GALLERY_REQUEST);
                 uploadImage("van4");
+                urlVan4 = url;
                 //startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem."), 123);
             }
         });
@@ -190,6 +206,11 @@ public class PrincipalMotorista extends AppCompatActivity {
                 motorista.setLocaisAtendidos(bairro);
                 motorista.setTelefone(telefone);
                 motorista.setInstituicoesAtendidas(instituicoes);
+                motorista.setUrlPerfil(urlPerfil);
+                motorista.setUrlVan1(urlVan1);
+                motorista.setUrlVan2(urlVan2);
+                motorista.setUrlVan3(urlVan3);
+                motorista.setUrlVan4(urlVan4);
                 atualizar(motorista, motoristaDataBase);
             }
         });
@@ -217,6 +238,26 @@ public class PrincipalMotorista extends AppCompatActivity {
                     textInstituicoes.setText(dataSnapshot.child(idMotorista).child("instituicoesAtendidas").getValue().toString());
                     textTelefone.setText(dataSnapshot.child(idMotorista).child("telefone").getValue().toString());
                     numeroCliques.setText(dataSnapshot.child(idMotorista).child("acessos").getValue().toString());
+                    motorista.setUrlPerfil(dataSnapshot.child(idMotorista).child("urlPerfil").getValue().toString());
+                    motorista.setUrlVan1(dataSnapshot.child(idMotorista).child("urlVan1").getValue().toString());
+                    motorista.setUrlVan2(dataSnapshot.child(idMotorista).child("urlVan2").getValue().toString());
+                    motorista.setUrlVan3(dataSnapshot.child(idMotorista).child("urlVan3").getValue().toString());
+                    motorista.setUrlVan4(dataSnapshot.child(idMotorista).child("urlVan4").getValue().toString());
+                    if(!motorista.getUrlPerfil().equals("")) {
+                        Picasso.get().load(motorista.getUrlPerfil()).into(imagemPerfil);
+                    }
+                    if(!motorista.getUrlVan1().equals("")) {
+                        Picasso.get().load(motorista.getUrlVan1()).into(imagemVan1);
+                    }
+                    if(!motorista.getUrlVan2().equals("")) {
+                        Picasso.get().load(motorista.getUrlVan2()).into(imagemVan2);
+                    }
+                    if(!motorista.getUrlVan3().equals("")) {
+                        Picasso.get().load(motorista.getUrlVan3()).into(imagemVan3);
+                    }
+                    if(!motorista.getUrlVan4().equals("")) {
+                        Picasso.get().load(motorista.getUrlVan4()).into(imagemVan4);
+                    }
                 }
 //                else {
 //                    motorista = null;
@@ -238,7 +279,6 @@ public class PrincipalMotorista extends AppCompatActivity {
 
             }
         });
-
         if (motorista != null) {
             nome.setText(motorista.getNome());
             textViewEmail.setText(motorista.getEmail());
@@ -304,9 +344,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                         break;
                     default:
                 }
-            }
-
-            catch (IOException e) {
+            } catch (IOException e) {
                 // Log the exception
                 e.printStackTrace();
             }
@@ -314,7 +352,7 @@ public class PrincipalMotorista extends AppCompatActivity {
     }
 
     // UploadImage method
-    private void uploadImage(String identificador) {
+    private void uploadImage(final String identificador) {
         if (uri != null) {
 
             // Code for showing progressDialog while uploading
@@ -323,44 +361,53 @@ public class PrincipalMotorista extends AppCompatActivity {
             progressDialog.show();
 
             // Defining the child of storageReference
-            final String path = "imagens/"+ Base64.encodeToString(email.getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "") + " " + identificador;
+            final String path = "imagens/" + Base64.encodeToString(motorista.getEmail().getBytes(), Base64.DEFAULT).replaceAll("(\\n|\\r)", "") + " " + identificador;
             final StorageReference ref = storageReference.child(path);
 
-            ref.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            final UploadTask uploadTask = ref.putFile(uri);
+            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
-                public void onSuccess(Uri uri) {
-                    ref.delete();
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    // Image uploaded successfully
+                    // Dismiss dialog
+                    progressDialog.dismiss();
+                    Toast.makeText(PrincipalMotorista.this, "Image Uploaded!!", Toast.LENGTH_SHORT).show();
+                    Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+
+                            // Continue with the task to get the download URL
+                            return ref.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                url = task.getResult().toString();
+                            } else {
+                                // Handle failures
+                                // ...
+                            }
+                        }
+                    });
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // adding listeners on upload
-                    // or failure of image
-                    ref.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            // Image uploaded successfully
-                            // Dismiss dialog
-                            progressDialog.dismiss();
-                            Toast.makeText(PrincipalMotorista.this, "Image Uploaded!!", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Error, Image not uploaded
-                            progressDialog.dismiss();
-                            Toast.makeText(PrincipalMotorista.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }) .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        // Progress Listener for loading
-                        // percentage on the dialog box
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
-                        }
-                    });
+                public void onFailure(@NonNull Exception e) {
+                    // Error, Image not uploaded
+                    progressDialog.dismiss();
+                    Toast.makeText(PrincipalMotorista.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                // Progress Listener for loading
+                // percentage on the dialog box
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
                 }
             });
         }

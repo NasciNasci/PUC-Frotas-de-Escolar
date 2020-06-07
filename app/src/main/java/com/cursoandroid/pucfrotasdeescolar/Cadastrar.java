@@ -63,6 +63,11 @@ public class Cadastrar extends AppCompatActivity {
                                 motorista.setLocaisAtendidos("");
                                 motorista.setTelefone("");
                                 motorista.setDescricao("");
+                                motorista.setUrlPerfil("");
+                                motorista.setUrlVan1("");
+                                motorista.setUrlVan2("");
+                                motorista.setUrlVan3("");
+                                motorista.setUrlVan4("");
                                 create(motorista, motoristaDatabase);
                             }
                             if (buttonAluno.isChecked()) {
