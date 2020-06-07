@@ -1,5 +1,7 @@
 package com.cursoandroid.pucfrotasdeescolar;
 
+import java.util.logging.Handler;
+
 public class Motorista extends Usuario {
 
     private String descricao;
@@ -75,4 +77,5 @@ public class Motorista extends Usuario {
     public String getDescricao() {
         return descricao;
     }
+
 }

@@ -2,8 +2,6 @@ package com.cursoandroid.pucfrotasdeescolar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -56,11 +54,11 @@ public class MainActivity extends AppCompatActivity {
                 if ((!email.equals("")) && (!senha.equals(""))) {
                     if (verificaEmail(email)) {
                         if (buttonMotorista.isChecked()) {
-                            Motorista motorista = new Motorista(email, senha);
+                            Usuario motorista = new Motorista(email, senha);
                             login(motorista, motoristaDatabase);
                         }
                         if (buttonAluno.isChecked()) {
-                            Cliente cliente = new Cliente(email, senha);
+                            Usuario cliente = new Cliente(email, senha);
                             login(cliente, clienteDatabase);
                         }
                         if (!buttonMotorista.isChecked() && !buttonAluno.isChecked()) {
