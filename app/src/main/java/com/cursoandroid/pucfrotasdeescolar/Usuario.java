@@ -8,35 +8,14 @@ public class Usuario implements Serializable {
     private String email;
     private String senha;
 
-    public Usuario() {
+    Usuario() {
         new Usuario("", "", "");
     }
 
-    public Usuario(String email, String senha) {
-        this.email = email;
-        this.senha = senha;
-    }
-
-    public Usuario(String nome, String email, String senha) {
+    private Usuario(String nome, String email, String senha) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-    }
-
-    public Usuario(String id, String nome, String email, String senha) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-    }
-
-    public Usuario(String email, String senha, boolean status) {
-        this.email = email;
-        this.senha = senha;
-    }
-
-    public Usuario(Usuario usuario) {
-        new Usuario(usuario.nome, usuario.email, usuario.senha);
     }
 
     public void setId(String id) {
@@ -51,7 +30,7 @@ public class Usuario implements Serializable {
         this.email = email;
     }
 
-    public void setSenha(String senha) {
+    void setSenha(String senha) {
         this.senha = senha;
     }
 
@@ -67,7 +46,7 @@ public class Usuario implements Serializable {
         return this.email;
     }
 
-    public String getSenha() {
+    String getSenha() {
         return this.senha;
     }
 }

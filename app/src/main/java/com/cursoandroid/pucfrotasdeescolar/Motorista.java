@@ -1,5 +1,7 @@
 package com.cursoandroid.pucfrotasdeescolar;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
 public class Motorista extends Usuario implements Serializable {
@@ -15,111 +17,105 @@ public class Motorista extends Usuario implements Serializable {
     private String urlVan4;
     private int acessos;
 
-    public Motorista() {
+    Motorista() {
         new Motorista("", "", "");
     }
 
-    public Motorista(String email, String senha) {
+    Motorista(String email, String senha) {
         this.setEmail(email);
         this.setSenha(senha);
     }
 
-    public Motorista(String nome, String email, String senha) {
+    Motorista(String nome, String email, String senha) {
         this.setNome(nome);
         this.setEmail(email);
         this.setSenha(senha);
     }
 
-    public Motorista(String id, String nome, String email, String senha) {
-        this.setId(id);
-        this.setNome(nome);
-        this.setEmail(email);
-        this.setSenha(senha);
-    }
-
+    @NonNull
     public String toString() {
         return this.getNome() + "\n"
                 + this.getEmail() + "\n"
                 + "Instituições Atendidas: " + this.instituicoesAtendidas;
     }
 
-    public void setDescricao(String descricao) {
+    void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 
-    public void setInstituicoesAtendidas(String instituicoesAtendidas) {
+    void setInstituicoesAtendidas(String instituicoesAtendidas) {
         this.instituicoesAtendidas = instituicoesAtendidas;
     }
 
-    public void setLocaisAtendidos(String locaisAtendidos) {
+    void setLocaisAtendidos(String locaisAtendidos) {
         this.locaisAtendidos = locaisAtendidos;
     }
 
-    public void setTelefone(String telefone) {
+    void setTelefone(String telefone) {
         this.telefone = telefone;
     }
 
-    public void setAcessos(int acessos) {
+    void setAcessos(int acessos) {
         this.acessos = acessos;
     }
 
-    public void setUrlPerfil(String urlPerfil) {
+    void setUrlPerfil(String urlPerfil) {
         this.urlPerfil = urlPerfil;
     }
 
-    public void setUrlVan1(String urlVan1) {
+    void setUrlVan1(String urlVan1) {
         this.urlVan1 = urlVan1;
     }
 
-    public void setUrlVan2(String urlVan2) {
+    void setUrlVan2(String urlVan2) {
         this.urlVan2 = urlVan2;
     }
 
-    public void setUrlVan3(String urlVan3) {
+    void setUrlVan3(String urlVan3) {
         this.urlVan3 = urlVan3;
     }
 
-    public void setUrlVan4(String urlVan4) {
+    void setUrlVan4(String urlVan4) {
         this.urlVan4 = urlVan4;
     }
 
-    public String getInstituicoesAtendidas() {
+    String getInstituicoesAtendidas() {
         return this.instituicoesAtendidas;
     }
 
-    public String getLocaisAtendidos() {
+    String getLocaisAtendidos() {
         return this.locaisAtendidos;
     }
 
-    public String getTelefone() {
+    String getTelefone() {
         return this.telefone;
     }
 
-    public int getAcessos() {
+    int getAcessos() {
         return this.acessos;
     }
 
-    public String getDescricao() {
+    String getDescricao() {
         return this.descricao;
     }
 
-    public String getUrlPerfil() {
+    String getUrlPerfil() {
         return this.urlPerfil;
     }
 
-    public String getUrlVan1() {
+    String getUrlVan1() {
         return this.urlVan1;
     }
 
-    public String getUrlVan2() {
+    String getUrlVan2() {
         return this.urlVan2;
     }
 
-    public String getUrlVan3() {
+    String getUrlVan3() {
         return this.urlVan3;
     }
 
-    public String getUrlVan4() {
+    String getUrlVan4() {
         return this.urlVan4;
     }
 }

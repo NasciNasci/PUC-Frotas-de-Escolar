@@ -23,7 +23,10 @@
     <string name="telefone__2">Telefone:</string>
     <string name="imagens">Galeria do escolar</string>
     <string name="cliques">Número de acessos:</string>
-    <string name="quantidade"></string>
-    <string name="resposta_nome"></string>
-    <string name="resposta_email"></string>
+    <string name="quantidade"> </string>
+    <string name="resposta_nome"> </string>
+    <string name="resposta_email"> </string>
+    <string name="empty_body"> </string>
+    <string name="foto_descricao_app">Foto VanWay com a logo do app</string>
+    <string name="foto_descricao">Foto</string>
 </resources>
