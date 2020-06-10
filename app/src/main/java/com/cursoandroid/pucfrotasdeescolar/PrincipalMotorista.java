@@ -108,7 +108,7 @@ public class PrincipalMotorista extends AppCompatActivity {
         });
 
         buttonSalvar.setOnClickListener(v -> {
-            if(uriMap.size() > 0) {
+            if (uriMap.size() > 0) {
                 final ProgressDialog progressDialog = new ProgressDialog(this);
                 progressDialog.setTitle("Uploading...");
                 progressDialog.show();
@@ -117,6 +117,9 @@ public class PrincipalMotorista extends AppCompatActivity {
                     atualizar(motorista, motoristaDataBase);
                     progressDialog.dismiss();
                 });
+            } else if (textDescricao.getText() != null || textBairro.getText() != null || textTelefone.getText() != null || textInstituicoes.getText() != null) {
+                getDataAndUpdateMotorista();
+                atualizar(motorista, motoristaDataBase);
             }
         });
     }
@@ -141,14 +144,10 @@ public class PrincipalMotorista extends AppCompatActivity {
     }
 
     private void getDataAndUpdateMotorista() {
-        String descricao = textDescricao.getText().toString();
-        String bairro = textBairro.getText().toString();
-        String telefone = textTelefone.getText().toString();
-        String instituicoes = textInstituicoes.getText().toString();
-        motorista.setDescricao(descricao);
-        motorista.setLocaisAtendidos(bairro);
-        motorista.setTelefone(telefone);
-        motorista.setInstituicoesAtendidas(instituicoes);
+        motorista.setDescricao(textDescricao.getText().toString());
+        motorista.setLocaisAtendidos(textBairro.getText().toString());
+        motorista.setTelefone(textTelefone.getText().toString());
+        motorista.setInstituicoesAtendidas(textInstituicoes.getText().toString());
         checkingsAndUpdatesMotorista();
     }
 
@@ -193,11 +192,11 @@ public class PrincipalMotorista extends AppCompatActivity {
                 String idMotorista = Base64.encodeToString(motorista.getEmail().getBytes(), Base64.DEFAULT).replaceAll("([\\n\\r])", "");
                 boolean motoristaCadastrado = dataSnapshot.hasChild(idMotorista);
                 if (motoristaCadastrado) {
-                    textDescricao.setText(Objects.requireNonNull(dataSnapshot.child(idMotorista).child("descricao").getValue()).toString());
-                    textBairro.setText(Objects.requireNonNull(dataSnapshot.child(idMotorista).child("locaisAtendidos").getValue()).toString());
-                    textInstituicoes.setText(Objects.requireNonNull(dataSnapshot.child(idMotorista).child("instituicoesAtendidas").getValue()).toString());
-                    textTelefone.setText(Objects.requireNonNull(dataSnapshot.child(idMotorista).child("telefone").getValue()).toString());
-                    numeroCliques.setText(Objects.requireNonNull(dataSnapshot.child(idMotorista).child("acessos").getValue()).toString());
+                    textDescricao.setText(motorista.getDescricao());
+                    textBairro.setText(motorista.getLocaisAtendidos());
+                    textInstituicoes.setText(motorista.getInstituicoesAtendidas());
+                    textTelefone.setText(motorista.getTelefone());
+                    numeroCliques.setText(dataSnapshot.child(motorista.getId()).child("acessos").getValue().toString());
                     if (!motorista.getUrlPerfil().equals("")) {
                         Picasso.get().load(motorista.getUrlPerfil()).into(imagemPerfil);
                     }
@@ -274,7 +273,7 @@ public class PrincipalMotorista extends AppCompatActivity {
             final String path = "imagens/" + Base64.encodeToString(motorista.getEmail().getBytes(), Base64.DEFAULT).replaceAll("([\\n\\r])", "") + " " + identificador;
             final StorageReference ref = storageReference.child(path);
 
-            if (!uriMap.containsKey(identificador)  || uriMap.get(identificador) == null)
+            if (!uriMap.containsKey(identificador) || uriMap.get(identificador) == null)
                 completeUpload.onComplete(null);
 
             try {
@@ -296,7 +295,7 @@ public class PrincipalMotorista extends AppCompatActivity {
                     // Error, Image not uploaded
                     Toast.makeText(PrincipalMotorista.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
-            } catch (Exception ignored){
+            } catch (Exception ignored) {
 
             }
         }
