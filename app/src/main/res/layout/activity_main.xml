@@ -252,6 +252,7 @@
             android:text="@string/criar_uma_conta"
             android:textAllCaps="true"
             android:textSize="@dimen/tamanho_credenciais"
+            android:textColor="@color/color3"
             app:layout_constraintBottom_toTopOf="@+id/guideline5"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"

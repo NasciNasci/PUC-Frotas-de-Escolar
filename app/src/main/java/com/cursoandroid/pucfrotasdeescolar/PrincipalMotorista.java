@@ -192,11 +192,11 @@ public class PrincipalMotorista extends AppCompatActivity {
                 String idMotorista = Base64.encodeToString(motorista.getEmail().getBytes(), Base64.DEFAULT).replaceAll("([\\n\\r])", "");
                 boolean motoristaCadastrado = dataSnapshot.hasChild(idMotorista);
                 if (motoristaCadastrado) {
-                    textDescricao.setText(Objects.requireNonNull(dataSnapshot.child(idMotorista).child("descricao").getValue()).toString());
-                    textBairro.setText(Objects.requireNonNull(dataSnapshot.child(idMotorista).child("locaisAtendidos").getValue()).toString());
-                    textInstituicoes.setText(Objects.requireNonNull(dataSnapshot.child(idMotorista).child("instituicoesAtendidas").getValue()).toString());
-                    textTelefone.setText(Objects.requireNonNull(dataSnapshot.child(idMotorista).child("telefone").getValue()).toString());
-                    numeroCliques.setText(Objects.requireNonNull(dataSnapshot.child(idMotorista).child("acessos").getValue()).toString());
+                    textDescricao.setText(motorista.getDescricao());
+                    textBairro.setText(motorista.getLocaisAtendidos());
+                    textInstituicoes.setText(motorista.getInstituicoesAtendidas());
+                    textTelefone.setText(motorista.getTelefone());
+                    numeroCliques.setText(dataSnapshot.child(motorista.getId()).child("acessos").getValue().toString());
                     if (!motorista.getUrlPerfil().equals("")) {
                         Picasso.get().load(motorista.getUrlPerfil()).into(imagemPerfil);
                     }
