@@ -55,10 +55,11 @@ public class PrincipalMotorista extends AppCompatActivity {
     private TextView textViewEmail;
     private Button buttonSalvar;
     private String urlPerfil;
-    private String urlVan1;
-    private String urlVan2;
-    private String urlVan3;
-    private String urlVan4;
+    private String urlVan1 = "";
+    private String urlVan2 = "";
+    private String urlVan3 = "";
+    private String urlVan4 = "";
+
 
 
     private Map<String, Uri> uriMap;
@@ -70,11 +71,11 @@ public class PrincipalMotorista extends AppCompatActivity {
         initializeViews();
 
         uriMap = new HashMap<>();
-        urlPerfil = "";
-        urlVan1 = "";
-        urlVan2 = "";
-        urlVan3 = "";
-        urlVan4 = "";
+//        urlPerfil = "";
+//        urlVan1 = "";
+//        urlVan2 = "";
+//        urlVan3 = "";
+//        urlVan4 = "";
 
         intent = getIntent();
         motorista = (Motorista) intent.getSerializableExtra("motorista");
@@ -152,19 +153,19 @@ public class PrincipalMotorista extends AppCompatActivity {
     }
 
     private void checkingsAndUpdatesMotorista() {
-        if (urlPerfil != null)
+        if (urlPerfil != null && !urlPerfil.equals(""))
             motorista.setUrlPerfil(urlPerfil);
 
-        if (urlVan1 != null)
+        if (urlVan1 != null && !urlVan1.equals(""))
             motorista.setUrlVan1(urlVan1);
 
-        if (urlVan2 != null)
+        if (urlVan2 != null && !urlVan2.equals(""))
             motorista.setUrlVan2(urlVan2);
 
-        if (urlVan3 != null)
+        if (urlVan3 != null && !urlVan3.equals(""))
             motorista.setUrlVan3(urlVan3);
 
-        if (urlVan4 != null)
+        if (urlVan4 != null && !urlVan4.equals(""))
             motorista.setUrlVan4(urlVan4);
     }
 

@@ -89,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void login(final Usuario usuario, final DatabaseReference databaseReference) {
 
+        emailUsuario.setText("");
+        senhaUsuario.setText("");
+
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
