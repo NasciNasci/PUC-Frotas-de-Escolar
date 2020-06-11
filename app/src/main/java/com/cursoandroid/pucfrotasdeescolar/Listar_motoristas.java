@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 
 import com.google.firebase.database.DataSnapshot;
@@ -12,9 +13,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 public class Listar_motoristas extends AppCompatActivity implements OnClickListener<Motorista> {
@@ -22,6 +25,7 @@ public class Listar_motoristas extends AppCompatActivity implements OnClickListe
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference contaoDatabaseReference = databaseReference.child("Motorista");
     private MotoristaAdapter adapter;
+    private ImageView imagemPerfil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,7 @@ public class Listar_motoristas extends AppCompatActivity implements OnClickListe
         adapter = new MotoristaAdapter(this);
         RecyclerView listaMotorista = (RecyclerView) findViewById(R.id.listview_id);
         listaMotorista.setAdapter(adapter);
+        imagemPerfil = findViewById(R.id.imagemMotorista);
 
         contaoDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
